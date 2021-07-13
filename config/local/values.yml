@@ -1,0 +1,101 @@
+
+serviceDict.mapping:
+  /v1/pets@get: com.networknt.petstore-1.0.0
+  /v2/address@get: party.address-2.0.0
+  /v1/contact@post: party.contact-1.0.0
+
+server.httpPort: 9080
+server.httpsPort: 9445
+server.serviceId: light-mesh-1.0.0
+
+## proxy yaml
+proxy.containerPort: '8080'
+
+
+## handler yaml
+handler.enabled: true
+
+handler.handlers:
+  # Light-framework cross-cutting concerns implemented in the microservice
+  - com.networknt.exception.ExceptionHandler@exception
+  # - com.networknt.metrics.MetricsHandler@metrics
+  - com.networknt.traceability.TraceabilityHandler@traceability
+  - com.networknt.correlation.CorrelationHandler@correlation
+  # Cors handler to handler post/put pre-flight. It is not used in the sidecar but only in the router.
+  # - com.networknt.cors.CorsHttpHandler@cors
+  - com.networknt.openapi.OpenApiHandler@specification
+  - com.networknt.openapi.JwtVerifyHandler@security
+  - com.networknt.body.ProxyBodyHandler@body
+  # - com.networknt.audit.AuditHandler@audit
+  # - com.networknt.sanitizer.SanitizerHandler@sanitizer
+  - com.networknt.openapi.ValidatorHandler@validator
+  # Header middleware to manipulate request and/or response headers before or after downstream server
+  - com.networknt.header.HeaderHandler@header
+  # Direct requests to named services based on the request path
+  - com.networknt.router.middleware.SidecarSAMLTokenHandler@saml
+  - com.networknt.router.middleware.SidecarServiceDictHandler@path
+  - com.networknt.router.SidecarRouterHandler@router
+  - com.networknt.proxy.LightProxyHandler@proxy
+  - com.networknt.proxy.ProxyServerInfoHandler@proxyServerInfo
+  # - com.networknt.resource.VirtualHostHandler@virtual
+  # Customer business domain specific cross-cutting concerns handlers
+  # - com.example.validator.CustomizedValidator@custvalidator
+  # Framework endpoint handlers
+  - com.networknt.health.HealthGetHandler@health
+  - com.networknt.info.ServerInfoGetHandler@info
+  # - com.networknt.metrics.prometheus.PrometheusGetHandler@getprometheus
+
+handler.chains:
+  default:
+    - exception
+    # - metrics
+    - traceability
+    - correlation
+    # - cors
+    - header
+    # - saml
+    - path
+    - router
+    - specification
+    - security
+    - body
+    #- audit
+    #- sanitizer
+    - validator
+    - proxy
+
+handler.paths:
+  - path: '/*'
+    method: 'get'
+    exec:
+      - default
+  - path: '/*'
+    method: 'post'
+    exec:
+      - default
+  - path: '/*'
+    method: 'delete'
+    exec:
+      - default
+  - path: '/*'
+    method: 'put'
+    exec:
+      - default
+  - path: '/*'
+    method: 'patch'
+    exec:
+      - default
+
+  - path: '/health/com.networknt.backend-1.0.0'
+    method: 'get'
+    exec:
+      - health
+
+  # In most case, the /server/info endpoint shouldn't be exposed. If it is, then it must be protected by OAuth 2.0 or Basic Auth
+  - path: '/server/info'
+    method: 'get'
+    exec:
+      - proxyServerInfo
+
+##handler.basePath: /v1
+
