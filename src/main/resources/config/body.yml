@@ -1,0 +1,6 @@
+# Enable body parse flag
+enabled: ${body.enabled:true}
+# cache request body
+cacheRequestBody: ${body.cacheRequestBody:false}
+# maxBuffers to cache the body for ProxyBodyHandler to read the body. 64K by default.
+maxBuffers: ${body.maxBuffers:65536}

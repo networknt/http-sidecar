@@ -1,0 +1,6 @@
+# Specification type and filename definition for Swagger UI rendering
+
+# specification filename
+filename: openapi.yaml
+# specification content type
+contentType: text/yaml
