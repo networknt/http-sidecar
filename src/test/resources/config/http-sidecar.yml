@@ -1,0 +1,7 @@
+---
+# Light http sidecar Configuration
+
+# If the enabledRouterByServiceId set as true, sidecar will router request based on if the request header has service id or not
+# If user want to handler directly routing, set the value as false, then sidecar will router request if the protocol is http which indicate internal request inside pod
+routeByServiceId: false
+

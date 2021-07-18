@@ -19,11 +19,13 @@ package com.networknt.router;
 import com.networknt.config.Config;
 import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
+import com.networknt.httpstring.HttpStringConstants;
 import com.networknt.url.HttpURL;
 import com.networknt.utility.ModuleRegistry;
 import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
+import io.undertow.util.HeaderValues;
 
 import java.util.Map;
 
@@ -37,12 +39,23 @@ public class SidecarRouterHandler extends RouterHandler implements MiddlewareHan
 
 
     private volatile HttpHandler next;
-    public static final String CONFIG_NAME = "serviceDict";
-    public static Map<String, Object> config = Config.getInstance().getJsonMapConfigNoCache(CONFIG_NAME);
+    public static final String ROUTER_CONFIG_NAME = "router";
+    public static final String SIDECAR_CONFIG_NAME = "http-sidecar";
+
+    public static Map<String, Object> config = Config.getInstance().getJsonMapConfigNoCache(ROUTER_CONFIG_NAME);
+    public static HttpSidecarConfig sidecarConfig = (HttpSidecarConfig)Config.getInstance().getJsonObjectConfig(SIDECAR_CONFIG_NAME, HttpSidecarConfig.class);
 
     @Override
     public void handleRequest(HttpServerExchange httpServerExchange) throws Exception {
-        if (HttpURL.PROTOCOL_HTTP.equalsIgnoreCase(httpServerExchange.getRequestScheme())) {
+        if (sidecarConfig.isRouteByServiceId()) {
+            HeaderValues serviceIdHeader = httpServerExchange.getRequestHeaders().get(HttpStringConstants.SERVICE_ID);
+            String serviceId = serviceIdHeader != null ? serviceIdHeader.peekFirst() : null;
+            if (serviceId != null) {
+                proxyHandler.handleRequest(httpServerExchange);
+            } else {
+                Handler.next(httpServerExchange, next);
+            }
+        } else if (HttpURL.PROTOCOL_HTTP.equalsIgnoreCase(httpServerExchange.getRequestScheme())){
             proxyHandler.handleRequest(httpServerExchange);
         } else {
             Handler.next(httpServerExchange, next);
