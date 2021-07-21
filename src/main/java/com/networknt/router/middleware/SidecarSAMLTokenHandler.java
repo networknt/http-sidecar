@@ -7,6 +7,7 @@ import com.networknt.router.HttpSidecarConfig;
 import com.networknt.url.HttpURL;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
+import io.undertow.util.HeaderMap;
 import io.undertow.util.HeaderValues;
 
 public class SidecarSAMLTokenHandler extends  SAMLTokenHandler{
@@ -19,7 +20,8 @@ public class SidecarSAMLTokenHandler extends  SAMLTokenHandler{
         if (sidecarConfig.isRouteByServiceId()) {
             HeaderValues serviceIdHeader = exchange.getRequestHeaders().get(HttpStringConstants.SERVICE_ID);
             String serviceId = serviceIdHeader != null ? serviceIdHeader.peekFirst() : null;
-            if (serviceId != null) {
+            String serviceUrl = exchange.getRequestHeaders().getFirst(HttpStringConstants.SERVICE_URL);
+            if (serviceId != null || serviceUrl!=null) {
                 super.handleRequest(exchange);
             } else {
                 Handler.next(exchange, next);

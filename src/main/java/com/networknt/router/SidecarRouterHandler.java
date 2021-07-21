@@ -50,7 +50,8 @@ public class SidecarRouterHandler extends RouterHandler implements MiddlewareHan
         if (sidecarConfig.isRouteByServiceId()) {
             HeaderValues serviceIdHeader = httpServerExchange.getRequestHeaders().get(HttpStringConstants.SERVICE_ID);
             String serviceId = serviceIdHeader != null ? serviceIdHeader.peekFirst() : null;
-            if (serviceId != null) {
+            String serviceUrl = httpServerExchange.getRequestHeaders().getFirst(HttpStringConstants.SERVICE_URL);
+            if (serviceId != null || serviceUrl!=null) {
                 proxyHandler.handleRequest(httpServerExchange);
             } else {
                 Handler.next(httpServerExchange, next);

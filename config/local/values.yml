@@ -32,8 +32,8 @@ handler.handlers:
   # Header middleware to manipulate request and/or response headers before or after downstream server
   - com.networknt.header.HeaderHandler@header
   # Direct requests to named services based on the request path
-  - com.networknt.router.middleware.SidecarSAMLTokenHandler@saml
   - com.networknt.router.middleware.SidecarServiceDictHandler@path
+  - com.networknt.router.middleware.SidecarSAMLTokenHandler@saml
   - com.networknt.router.SidecarRouterHandler@router
   - com.networknt.proxy.LightProxyHandler@proxy
   - com.networknt.proxy.ProxyServerInfoHandler@proxyServerInfo

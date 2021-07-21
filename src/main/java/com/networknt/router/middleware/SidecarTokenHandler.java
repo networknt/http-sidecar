@@ -19,7 +19,8 @@ public class SidecarTokenHandler extends TokenHandler{
         if (sidecarConfig.isRouteByServiceId()) {
             HeaderValues serviceIdHeader = exchange.getRequestHeaders().get(HttpStringConstants.SERVICE_ID);
             String serviceId = serviceIdHeader != null ? serviceIdHeader.peekFirst() : null;
-            if (serviceId != null) {
+            String serviceUrl = exchange.getRequestHeaders().getFirst(HttpStringConstants.SERVICE_URL);
+            if (serviceId != null || serviceUrl!=null) {
                 super.handleRequest(exchange);
             } else {
                 Handler.next(exchange, next);
