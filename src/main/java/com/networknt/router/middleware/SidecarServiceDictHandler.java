@@ -5,6 +5,7 @@ import com.networknt.handler.Handler;
 import com.networknt.httpstring.HttpStringConstants;
 import com.networknt.router.HttpSidecarConfig;
 import com.networknt.url.HttpURL;
+import com.networknt.utility.Constants;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.HeaderValues;
@@ -17,9 +18,9 @@ public class SidecarServiceDictHandler extends ServiceDictHandler {
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
 
-        if (sidecarConfig.isRouteByServiceId()) {
+        if (Constants.HEADER.equalsIgnoreCase(sidecarConfig.getEgressIngressIndicator())) {
             serviceDict(exchange);
-        } else if (HttpURL.PROTOCOL_HTTP.equalsIgnoreCase(exchange.getRequestScheme())) {
+        } else if (Constants.PROTOCOL.equalsIgnoreCase(sidecarConfig.getEgressIngressIndicator()) && HttpURL.PROTOCOL_HTTP.equalsIgnoreCase(exchange.getRequestScheme())){
             serviceDict(exchange);
         } else {
             Handler.next(exchange, next);

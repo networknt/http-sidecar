@@ -21,6 +21,7 @@ import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
 import com.networknt.httpstring.HttpStringConstants;
 import com.networknt.url.HttpURL;
+import com.networknt.utility.Constants;
 import com.networknt.utility.ModuleRegistry;
 import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
@@ -47,7 +48,7 @@ public class SidecarRouterHandler extends RouterHandler implements MiddlewareHan
 
     @Override
     public void handleRequest(HttpServerExchange httpServerExchange) throws Exception {
-        if (sidecarConfig.isRouteByServiceId()) {
+        if (Constants.HEADER.equalsIgnoreCase(sidecarConfig.getEgressIngressIndicator())) {
             HeaderValues serviceIdHeader = httpServerExchange.getRequestHeaders().get(HttpStringConstants.SERVICE_ID);
             String serviceId = serviceIdHeader != null ? serviceIdHeader.peekFirst() : null;
             String serviceUrl = httpServerExchange.getRequestHeaders().getFirst(HttpStringConstants.SERVICE_URL);
@@ -56,7 +57,7 @@ public class SidecarRouterHandler extends RouterHandler implements MiddlewareHan
             } else {
                 Handler.next(httpServerExchange, next);
             }
-        } else if (HttpURL.PROTOCOL_HTTP.equalsIgnoreCase(httpServerExchange.getRequestScheme())){
+        } else if (Constants.PROTOCOL.equalsIgnoreCase(sidecarConfig.getEgressIngressIndicator()) && HttpURL.PROTOCOL_HTTP.equalsIgnoreCase(httpServerExchange.getRequestScheme())){
             proxyHandler.handleRequest(httpServerExchange);
         } else {
             Handler.next(httpServerExchange, next);

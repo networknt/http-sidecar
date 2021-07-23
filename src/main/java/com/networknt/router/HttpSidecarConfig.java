@@ -21,16 +21,17 @@ package com.networknt.router;
  *
  */
 public class HttpSidecarConfig {
-    boolean routeByServiceId;
+    String egressIngressIndicator;
 
     public HttpSidecarConfig() {
     }
 
-    public boolean isRouteByServiceId() {
-        return routeByServiceId;
+    public String getEgressIngressIndicator() {
+        return egressIngressIndicator;
     }
 
-    public void setRouteByServiceId(boolean routeByServiceId) {
-        this.routeByServiceId = routeByServiceId;
+    public void setEgressIngressIndicator(String egressIngressIndicator) {
+        this.egressIngressIndicator = egressIngressIndicator;
     }
+
 }
