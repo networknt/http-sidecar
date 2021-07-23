@@ -46,6 +46,18 @@ In Kubernetes cluster environment, sidecar can be deployed as Sidecar container 
 
 
 
+### Note:
+
+If you want to use SidecarServiceDictHandler to get the service Id by the path url mapping from serviceDict.yml, add it before token handlers and router handler. The service Id get from serviceDict
+will be used for next handler chain.
+  
+```
+  - com.networknt.router.middleware.SidecarServiceDictHandler@path
+  - com.networknt.router.middleware.SidecarSAMLTokenHandler@saml
+  - com.networknt.router.SidecarRouterHandler@router
+
+```
+
 
 ### start http-sidecar locally and verify:
 
