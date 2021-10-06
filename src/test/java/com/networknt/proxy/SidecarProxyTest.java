@@ -62,7 +62,7 @@ public class SidecarProxyTest {
         if (backend == null) {
             logger.info("starting backend server");
             backend = Undertow.builder()
-                    .addHttpListener(8081, "localhost", ROUTES)
+                    .addHttpListener(18081, "localhost", ROUTES)
                     .build();
             backend.start();
         }
