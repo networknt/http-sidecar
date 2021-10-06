@@ -64,7 +64,7 @@ public class BaseRouterTest {
         if(server1 == null) {
             logger.info("starting server1");
             Undertow.Builder builder1 = Undertow.builder()
-                    .addHttpsListener(8082, "localhost", sslContext)
+                    .addHttpsListener(18082, "localhost", sslContext)
                     .setHandler(path().addPrefixPath("/v2/address", new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
