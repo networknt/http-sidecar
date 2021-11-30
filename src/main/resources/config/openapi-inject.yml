@@ -1,17 +1,6 @@
 openapi: 3.0.0
 paths:
-  /health/liveness/${server.serviceId}:
-    get:
-      description: pass through to the liveness endpoint that belongs to backend api
-      security:
-        - admin-scope:
-            # okta doesn't support either for now
-            # for control pane to access all businesses' admin endpoints
-            - admin
-            # for each business to access their own admin endpoints
-            - ${server.serviceId}/admin
-
-  /health/readiness/${server.serviceId}:
+  /health/${server.serviceId}:
     get:
       description: pass through to the liveness endpoint that belongs to backend api
       security:

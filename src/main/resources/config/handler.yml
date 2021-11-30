@@ -56,11 +56,17 @@ handlers:
   # - com.networknt.dump.DumpHandler@dump 
   - com.networknt.sanitizer.SanitizerHandler@sanitizer
   - com.networknt.openapi.ValidatorHandler@validator
+  # Header middleware to manipulate request and/or response headers before or after downstream server
+  - com.networknt.header.HeaderHandler@header
   - com.networknt.proxy.LightProxyHandler@proxy
+  # - com.networknt.router.middleware.PathPrefixServiceHandler@path
+  - com.networknt.router.middleware.SidecarTokenHandler@token
+  - com.networknt.router.SidecarRouterHandler@router
   # Customer business domain specific cross-cutting concerns handlers
   # - com.example.validator.CustomizedValidator@custvalidator
   # Framework endpoint handlers
   - com.networknt.health.HealthGetHandler@health
+  - com.networknt.proxy.ProxyHealthGetHandler@proxyHealth
   - com.networknt.proxy.ProxyServerInfoHandler@info
   - com.networknt.chaos.KillappAssaultHandler@killapp
   - com.networknt.chaos.LatencyAssaultHandler@latency
@@ -84,6 +90,11 @@ chains:
     - latency
     - memory
     - exchaos
+    # - cors
+    - header
+    # - path
+    - token
+    - router
     - specification
     - security
     - body 
@@ -122,16 +133,17 @@ paths:
       - health
 
   # This is the pass through liveness health check endpoint for the backend API
-  - path: '/health/liveness/${server.serviceId}'
+  - path: '/health/${server.serviceId}'
     method: 'get'
     exec:
       - default
 
-  # This is the pass through readiness health check endpoint for the backend API
-  - path: '/health/readiness/${server.serviceId}'
-    method: 'get'
+  - path: '/health/${server.serviceId}'
+    method: 'GET'
     exec:
-      - default
+      - exception
+      #- security
+      - proxyHealth
 
   # The proxy server info will combine the sidecar and backend server info together if it is implemented on the backend.
   - path: '/server/info'
