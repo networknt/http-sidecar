@@ -132,12 +132,6 @@ paths:
     exec:
       - health
 
-  # This is the pass through liveness health check endpoint for the backend API
-  - path: '/health/${server.serviceId}'
-    method: 'get'
-    exec:
-      - default
-
   - path: '/health/${server.serviceId}'
     method: 'GET'
     exec:
