@@ -31,7 +31,7 @@ enabled: true
 handlers:
   # Light-framework cross-cutting concerns implemented in the microservice
   - com.networknt.exception.ExceptionHandler@exception
-  # - com.networknt.metrics.MetricsHandler@metrics
+  - com.networknt.metrics.MetricsHandler@metrics
   - com.networknt.traceability.TraceabilityHandler@traceability
   - com.networknt.correlation.CorrelationHandler@correlation
   # Cors handler to handler post/put pre-flight. It is not used in the sidecar but only in the router.
@@ -40,10 +40,12 @@ handlers:
   - com.networknt.openapi.JwtVerifyHandler@security
   - com.networknt.body.ProxyBodyHandler@body
   # - com.networknt.audit.AuditHandler@audit
-  # - com.networknt.sanitizer.SanitizerHandler@sanitizer
+  - com.networknt.sanitizer.SanitizerHandler@sanitizer
   - com.networknt.openapi.ValidatorHandler@validator
   # Header middleware to manipulate request and/or response headers before or after downstream server
   - com.networknt.header.HeaderHandler@header
+  # Rate limit middleware to prevent DDoS attacks externally or throttle requests internally
+  - com.networknt.limit.LimitHandler@limit
   # Direct requests to named services based on the request path
   - com.networknt.router.middleware.SidecarServiceDictHandler@path
   - com.networknt.router.middleware.SidecarSAMLTokenHandler@saml
@@ -61,7 +63,8 @@ handlers:
 chains:
   default:
     - exception
-    # - metrics
+    - metrics
+    - limit
     - traceability
     - correlation
     # - cors
@@ -73,7 +76,7 @@ chains:
     - security
     - body
     #- audit
-    #- sanitizer
+    - sanitizer
     - validator
     - proxy
 
