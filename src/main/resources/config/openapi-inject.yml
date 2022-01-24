@@ -73,6 +73,14 @@ paths:
             # for each business to access their own admin endpoints
             - ${server.serviceId}/admin
 
+  /logger/content:
+    get:
+      description: to get the content of the logs from this service.
+      security:
+        - admin-scope:
+            - admin
+            - ${server.serviceId}/admin
+
 components:
   securitySchemes:
     admin-scope:

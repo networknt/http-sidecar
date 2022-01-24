@@ -1,6 +1,11 @@
 # Portal URL for accessing controller API. Default to lightapi.net public portal and it can be point to a standalone
 # light-controller instance for testing in the same Kubernetes cluster or docker-compose.
 portalUrl: ${portalRegistry.portalUrl:https://localhost:8438}
+# Bootstrap jwt token to access the light-controller. In most case, the pipeline will get the token from OAuth 2.0
+# provider during the deployment. And then pass the token to the container with an environment variable. The other
+# option is to use the light-4j encyptor to encrypt token and put it into the values.yml in the config server. In
+# that case, you can use portalRegistry.portalToken as the key instead of the environment variable.
+portalToken: ${PORTAL_AUTHORIZATION:eyJraWQiOiIxMDAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ1cm46Y29tOm5ldHdvcmtudDpvYXV0aDI6djEiLCJhdWQiOiJ1cm46Y29tLm5ldHdvcmtudCIsImV4cCI6MTk0MTEyMjc3MiwianRpIjoiTkc4NWdVOFR0SEZuSThkS2JsQnBTUSIsImlhdCI6MTYyNTc2Mjc3MiwibmJmIjoxNjI1NzYyNjUyLCJ2ZXJzaW9uIjoiMS4wIiwiY2xpZW50X2lkIjoiZjdkNDIzNDgtYzY0Ny00ZWZiLWE1MmQtNGM1Nzg3NDIxZTcyIiwic2NvcGUiOiJwb3J0YWwuciBwb3J0YWwudyIsInNlcnZpY2UiOiIwMTAwIn0.Q6BN5CGZL2fBWJk4PIlfSNXpnVyFhK6H8X4caKqxE1XAbX5UieCdXazCuwZ15wxyQJgWCsv4efoiwO12apGVEPxIc7gpvctPrRIDo59dmTjfWH0p3ja0Zp8tYLD-5Sh65WUtJtkvPQk0uG96JJ64Da28lU4lGFZaCvkaS-Et9Wn0BxrlCE5_ta66Qc9t4iUMeAsAHIZJffOBsREFhOpC0dKSXBAyt9yuLDuDt9j7HURXBHyxSBrv8Nj_JIXvKhAxquffwjZF7IBqb3QRr-sJV0auy-aBQ1v8dYuEyIawmIP5108LH8QdH-K8NkI1wMnNOz_wWDgixOcQqERmoQ_Q3g}
 # number of requests before resetting the shared connection to work around HTTP/2 limitation
 maxReqPerConn: ${portalRegistry.maxReqPerConn:1000000}
 # De-register the service after the amount of time with health check failed. Once a health check is failed, the
@@ -23,3 +28,7 @@ httpCheck: ${portalRegistry.httpCheck:true}
 # this is the only option as our portal controller cannot access your internal service to perform a health check.
 # We recommend deploying light-portal internally if you are running services within an internal network for efficiency.
 ttlCheck: ${portalRegistry.ttlCheck:false}
+# The health check path implemented on the server. In most of the cases, it would be /health/ plus the serviceId;
+# however, on a kubernetes cluster, it might be /health/liveness/ in order to differentiate from the /health/readiness/
+# Note that we need to provide the leading and trailing slash in the path definition.
+healthPath: ${portalRegistry.healthPath:/health/}
