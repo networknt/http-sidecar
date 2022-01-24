@@ -4,7 +4,7 @@
 # loaded for backward compatibility.
 ---
 # Enable JWT verification flag.
-enableVerifyJwt: false
+enableVerifyJwt: ${security.enableVerifyJwt:false}
 
 # Extract JWT scope token from the X-Scope-Token header and validate the JWT token
 enableExtractScopeToken: true
@@ -14,32 +14,32 @@ enableVerifyScope: ${openapi-security.enableVerifyScope:true}
 
 # Enable JWT scope verification. 
 # Only valid when (enableVerifyJwt is true) AND (enableVerifyScope is true)
-enableVerifyJWTScopeToken: ${openapi-security.enableVerifyJWTScopeToken:true}
+enableVerifyJWTScopeToken: ${security.enableVerifyJWTScopeToken:true}
 
 # User for test only. should be always be false on official environment.
-enableMockJwt: ${openapi-security.enableMockJwt:false}
+enableMockJwt: ${security.enableMockJwt:false}
 
 # JWT signature public certificates. kid and certificate path mappings.
 jwt:
   certificate:
     '100': primary.crt
     '101': secondary.crt
-  clockSkewInSeconds: ${openapi-security.clockSkewInSeconds:60}
+  clockSkewInSeconds: ${security.clockSkewInSeconds:60}
   # Key distribution server standard: JsonWebKeySet for other OAuth 2.0 provider| X509Certificate for light-oauth2
-  keyResolver: ${openapi-security.keyResolver:X509Certificate}
+  keyResolver: ${security.keyResolver:X509Certificate}
 
 # Enable or disable JWT token logging
-logJwtToken: ${openapi-security.logJwtToken:true}
+logJwtToken: ${security.logJwtToken:true}
 
 # Enable or disable client_id, user_id and scope logging.
-logClientUserScope: ${openapi-security.logClientUserScope:false}
+logClientUserScope: ${security.logClientUserScope:false}
 
 # Enable JWT token cache to speed up verification. This will only verify expired time
 # and skip the signature verification as it takes more CPU power and long time.
-enableJwtCache: ${openapi-security.enableJwtCache:true}
+enableJwtCache: ${security.enableJwtCache:true}
 
 # If you are using light-oauth2, then you don't need to have oauth subfolder for public
 # key certificate to verify JWT token, the key will be retrieved from key endpoint once
 # the first token is arrived. Default to false for dev environment without oauth2 server
 # or official environment that use other OAuth 2.0 providers.
-bootstrapFromKeyService: ${openapi-security.bootstrapFromKeyService:false}
+bootstrapFromKeyService: ${security.bootstrapFromKeyService:false}

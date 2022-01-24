@@ -1,7 +1,6 @@
 
-
 # Handler middleware chain configuration
-#----------------------------------------
+---
 enabled: true
 
 # Configuration for the LightHttpHandler. The handler is the base class  for all middleware, server and health handlers
@@ -52,7 +51,8 @@ handlers:
   # - com.networknt.cors.CorsHttpHandler@cors
   - com.networknt.openapi.OpenApiHandler@specification
   - com.networknt.openapi.JwtVerifyHandler@security
-  - com.networknt.body.ProxyBodyHandler@body
+  - com.networknt.body.ProxyBodyHandler@proxybody
+  - com.networknt.body.BodyHandler@body
   - com.networknt.audit.AuditHandler@audit
   # DumpHandler is to dump detail request/response info to log, useful for troubleshooting but not suggested to use in production due to it may lower the performance
   # - com.networknt.dump.DumpHandler@dump 
@@ -62,27 +62,32 @@ handlers:
   - com.networknt.header.HeaderHandler@header
   # Rate limit middleware to prevent DDoS attacks externally or throttle requests internally
   - com.networknt.limit.LimitHandler@limit
-  - com.networknt.proxy.LightProxyHandler@proxy
+  # Direct requests to named services based on the request path
   # - com.networknt.router.middleware.PathPrefixServiceHandler@path
   - com.networknt.router.middleware.SidecarTokenHandler@token
   - com.networknt.router.SidecarRouterHandler@router
+  - com.networknt.proxy.LightProxyHandler@proxy
   # Customer business domain specific cross-cutting concerns handlers
   # - com.example.validator.CustomizedValidator@custvalidator
   # Framework endpoint handlers
   - com.networknt.health.HealthGetHandler@health
   - com.networknt.proxy.ProxyHealthGetHandler@proxyHealth
-  - com.networknt.proxy.ProxyServerInfoHandler@info
+  - com.networknt.logging.handler.LoggerGetHandler@getLogger
+  - com.networknt.logging.handler.LoggerPostHandler@postLogger
+  - com.networknt.logging.handler.LoggerGetLogContentsHandler@getLogContents
+  # - com.networknt.metrics.prometheus.PrometheusGetHandler@getprometheus
+  # Chaos Monkey middleware handlers and API handler
   - com.networknt.chaos.KillappAssaultHandler@killapp
   - com.networknt.chaos.LatencyAssaultHandler@latency
   - com.networknt.chaos.MemoryAssaultHandler@memory
   - com.networknt.chaos.ExceptionAssaultHandler@exchaos
   - com.networknt.chaos.ChaosMonkeyGetHandler@chaosget
   - com.networknt.chaos.ChaosMonkeyPostHandler@chaospost
-  - com.networknt.logging.handler.LoggerGetHandler@getLogger
-  - com.networknt.logging.handler.LoggerPostHandler@postLogger
+  - com.networknt.proxy.ProxyServerInfoHandler@proxyServerInfo
   - com.networknt.specification.SpecDisplayHandler@spec
   - com.networknt.specification.SpecSwaggerUIHandler@swaggerui
   # - com.networknt.metrics.prometheus.PrometheusGetHandler@getprometheus
+  # Business Handlers
 
 chains:
   default:
@@ -95,6 +100,7 @@ chains:
     - latency
     - memory
     - exchaos
+    - audit
     # - cors
     - header
     # - path
@@ -102,12 +108,18 @@ chains:
     - router
     - specification
     - security
-    - body 
-    - audit
+    - proxybody
+    - sanitizer
     # - dump
-    # - sanitizer
     - validator
     - proxy
+  admin:
+    - exception
+    - correlation
+    - specification
+    - security
+    - body
+    - validator
 
 paths:
   - path: '/*'
@@ -131,50 +143,57 @@ paths:
     exec:
       - default
 
-  # This is the endpoint used by the Kubernetes probe without security.
-  - path: '/health'
-    method: 'get'
-    exec:
-      - health
-
-  - path: '/health/${server.serviceId}'
-    method: 'GET'
-    exec:
-      - exception
-      #- security
-      - proxyHealth
-
   # The proxy server info will combine the sidecar and backend server info together if it is implemented on the backend.
   - path: '/server/info'
     method: 'get'
     exec:
+      - admin
+      - proxyServerInfo
+  # the health endpoint for the proxy itself without security, this for both Kubernetes liveness and readiness.
+  - path: '/health'
+    method: 'get'
+    exec:
+      - exception
+      - health
+  # the health check endpoint called from control plane with security and it will invoke backend optionally.
+  - path: '/health/${server.serviceId}'
+    method: 'GET'
+    exec:
+      - exception
       - security
-      - info
+      - proxyHealth
 
   - path: '/logger'
     method: 'get'
     exec:
-      - security
+      - admin
       - getLogger
 
   - path: '/logger'
     method: 'post'
     exec:
-      - security
-      - body
+      - admin
       - postLogger
+
+  - path: '/logger/content'
+    method: 'GET'
+    exec:
+      - admin
+      - getLogContents
+
+  - path: '/chaosmonkey'
+    method: 'get'
+    exec:
+      # enable security once we have this endpoint in the spec with a proper scope.
+      - admin
+      - chaosget
 
   - path: '/chaosmonkey/{assault}'
     method: 'post'
     exec:
-      - security
+      # enable security once we have this endpoint in the spec with a proper scope.
+      - admin
       - chaospost
-  - path: '/chaosmonkey'
-    method: 'get'
-    exec:
-      - security
-      - chaosget
-
   - path: '/spec.yaml'
     method: 'get'
     exec:
