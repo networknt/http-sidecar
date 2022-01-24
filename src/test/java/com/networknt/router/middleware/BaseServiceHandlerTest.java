@@ -10,9 +10,9 @@ import io.undertow.client.ClientResponse;
 import io.undertow.util.HeaderMap;
 import io.undertow.util.Headers;
 import io.undertow.util.Methods;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xnio.IoUtils;
@@ -22,7 +22,7 @@ import java.net.URI;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Ignore
+@Disabled
 public class BaseServiceHandlerTest {
     static final Logger logger = LoggerFactory.getLogger(BaseServiceHandlerTest.class);
 
@@ -54,10 +54,10 @@ public class BaseServiceHandlerTest {
         HeaderMap headerMap = reference.get().getResponseHeaders();
         String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
         String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
-        Assert.assertEquals(200, statusCode);
-        Assert.assertEquals("OK", body);
-        Assert.assertEquals("party.address-1.0.0", serviceId);
-        Assert.assertEquals("dev", envTag);
+        Assertions.assertEquals(200, statusCode);
+        Assertions.assertEquals("OK", body);
+        Assertions.assertEquals("party.address-1.0.0", serviceId);
+        Assertions.assertEquals("dev", envTag);
     }
 
     @Test
@@ -88,10 +88,10 @@ public class BaseServiceHandlerTest {
         HeaderMap headerMap = reference.get().getResponseHeaders();
         String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
         String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
-        Assert.assertEquals(200, statusCode);
-        Assert.assertEquals("OK", body);
-        Assert.assertEquals("party.address-2.0.0", serviceId);
-        Assert.assertEquals("dev", envTag);
+        Assertions.assertEquals(200, statusCode);
+        Assertions.assertEquals("OK", body);
+        Assertions.assertEquals("party.address-2.0.0", serviceId);
+        Assertions.assertEquals("dev", envTag);
     }
 
     @Test
@@ -124,10 +124,10 @@ public class BaseServiceHandlerTest {
         HeaderMap headerMap = reference.get().getResponseHeaders();
         String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
         String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
-        Assert.assertEquals(200, statusCode);
-        Assert.assertEquals("OK", body);
-        Assert.assertEquals("party.contact-1.0.0", serviceId);
-        Assert.assertEquals("dev", envTag);
+        Assertions.assertEquals(200, statusCode);
+        Assertions.assertEquals("OK", body);
+        Assertions.assertEquals("party.contact-1.0.0", serviceId);
+        Assertions.assertEquals("dev", envTag);
     }
 
 
@@ -157,7 +157,7 @@ public class BaseServiceHandlerTest {
             IoUtils.safeClose(connection);
         }
         int statusCode = reference.get().getResponseCode();
-        Assert.assertEquals(404, statusCode);
+        Assertions.assertEquals(404, statusCode);
     }
 
 
@@ -192,9 +192,9 @@ public class BaseServiceHandlerTest {
         HeaderMap headerMap = reference.get().getResponseHeaders();
         String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
         String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
-        Assert.assertEquals(200, statusCode);
-        Assert.assertEquals("OK", body);
-        Assert.assertEquals("party.address-2.0.0", serviceId);
-        Assert.assertEquals("dev", envTag);
+        Assertions.assertEquals(200, statusCode);
+        Assertions.assertEquals("OK", body);
+        Assertions.assertEquals("party.address-2.0.0", serviceId);
+        Assertions.assertEquals("dev", envTag);
     }    
 }

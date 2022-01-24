@@ -26,7 +26,9 @@ import io.undertow.UndertowOptions;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
-import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,13 +43,13 @@ import java.util.Map;
 import static com.networknt.server.Server.TRUST_ALL_CERTS;
 import static io.undertow.Handlers.path;
 
+@ExtendWith(TestServer.class)
 public class BaseRouterTest {
     public  static final Logger logger = LoggerFactory.getLogger(BaseRouterTest.class);
     public static final String CONFIG_NAME = "server";
     public static final String CONFIG_SECRET = "secret";
 
     static Undertow server1 = null;
-    @ClassRule
     public static TestServer server = TestServer.getInstance();
     public static ServerConfig config = (ServerConfig) Config.getInstance().getJsonObjectConfig(CONFIG_NAME, ServerConfig.class);
     public static Map<String, Object> secret = DecryptUtil.decryptMap(Config.getInstance().getJsonMapConfig(CONFIG_SECRET));
@@ -59,7 +61,7 @@ public class BaseRouterTest {
     public static final int httpsPort = server.getServerConfig().getHttpsPort();
     public static final String url = enableHttp ? "http://localhost:" + httpPort : "https://localhost:" + httpsPort;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         if(server1 == null) {
             logger.info("starting server1");
@@ -80,7 +82,7 @@ public class BaseRouterTest {
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() throws Exception {
         if(server1 != null) {
             try {
