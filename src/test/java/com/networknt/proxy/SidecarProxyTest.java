@@ -31,7 +31,8 @@ import io.undertow.server.RoutingHandler;
 import io.undertow.util.Headers;
 import io.undertow.util.HttpString;
 import io.undertow.util.Methods;
-import org.junit.*;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xnio.IoUtils;
@@ -45,19 +46,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-
+@ExtendWith(TestServer.class)
 public class SidecarProxyTest {
     static final Logger logger = LoggerFactory.getLogger(SidecarProxyTest.class);
 
     static Undertow backend = null;
 
-    @ClassRule
     public static TestServer server = TestServer.getInstance();
 
     static final boolean enableHttp2 = server.getServerConfig().isEnableHttp2();
     static final String url = "https://localhost:8443";
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         if (backend == null) {
             logger.info("starting backend server");
@@ -69,7 +69,7 @@ public class SidecarProxyTest {
 
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() throws Exception {
         if (backend != null) {
             try {
@@ -158,7 +158,7 @@ public class SidecarProxyTest {
         }
         for (final AtomicReference<ClientResponse> reference : references) {
             System.out.println(reference.get().getAttachment(Http2Client.RESPONSE_BODY));
-            Assert.assertTrue(reference.get().getAttachment(Http2Client.RESPONSE_BODY).contains("{\"backend\":\"OK\"}"));
+            Assertions.assertTrue(reference.get().getAttachment(Http2Client.RESPONSE_BODY).contains("{\"backend\":\"OK\"}"));
         }
     }
 
@@ -186,7 +186,7 @@ public class SidecarProxyTest {
         } finally {
             IoUtils.safeClose(connection);
         }
-        Assert.assertTrue(reference.get().getAttachment(Http2Client.RESPONSE_BODY).contains("{\"proxy\": \"hello\"}"));
+        Assertions.assertTrue(reference.get().getAttachment(Http2Client.RESPONSE_BODY).contains("{\"proxy\": \"hello\"}"));
         System.out.println(reference.get().getAttachment(Http2Client.RESPONSE_BODY));
     }
 
@@ -196,7 +196,7 @@ public class SidecarProxyTest {
      *
      * @throws Exception
      */
-    @Ignore
+    @Disabled
     @Test
     public void testTimeout() throws Exception {
         final Http2Client client = Http2Client.getInstance();
@@ -221,7 +221,7 @@ public class SidecarProxyTest {
                 IoUtils.safeClose(connection);
             }
             System.out.println(reference.get().getAttachment(Http2Client.RESPONSE_BODY));
-            Assert.assertTrue(reference.get().getAttachment(Http2Client.RESPONSE_BODY).contains("{\"backend\":\"OK\"}"));
+            Assertions.assertTrue(reference.get().getAttachment(Http2Client.RESPONSE_BODY).contains("{\"backend\":\"OK\"}"));
             Thread.sleep(6000);
         }
     }

@@ -24,9 +24,9 @@ import io.undertow.client.ClientConnection;
 import io.undertow.client.ClientRequest;
 import io.undertow.client.ClientResponse;
 import io.undertow.util.Headers;
-import io.undertow.util.HttpString;
 import io.undertow.util.Methods;
-import org.junit.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.xnio.IoUtils;
 import org.xnio.OptionMap;
 
@@ -66,9 +66,9 @@ public class RouterHttpTest extends BaseRouterTest{
         }
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
-        Assert.assertEquals(200, statusCode);
+        Assertions.assertEquals(200, statusCode);
         if (statusCode == 200) {
-            Assert.assertEquals("Server1", body);
+            Assertions.assertEquals("Server1", body);
         }
     }
 
@@ -111,7 +111,7 @@ public class RouterHttpTest extends BaseRouterTest{
         for (final AtomicReference<ClientResponse> reference : references) {
             String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
             if(logger.isDebugEnabled()) logger.debug("body = " + body);
-            Assert.assertTrue(body.contains("Server"));
+            Assertions.assertTrue(body.contains("Server"));
         }
     }
 

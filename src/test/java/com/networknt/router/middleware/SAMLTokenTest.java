@@ -27,7 +27,9 @@ import io.undertow.client.ClientResponse;
 import io.undertow.util.Headers;
 import io.undertow.util.HttpString;
 import io.undertow.util.Methods;
-import org.junit.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xnio.IoUtils;
 import org.xnio.OptionMap;
 
@@ -43,7 +45,7 @@ public class SAMLTokenTest extends BaseRouterTest {
     static final String JWTAssertion = "eyJraWQiOiIxMDAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ1cm46Y29tOm5ldHdvcmtudDpvYXV0aDI6djEiLCJhdWQiOiJ1cm46Y29tLm5ldHdvcmtudCIsImV4cCI6MTg1MjMxNDQzMywianRpIjoiT1pQaXhwQ0FVMmtEQ1AzVC1zTzJ2dyIsImlhdCI6MTUzNjk1NDQzMywibmJmIjoxNTM2OTU0MzEzLCJ2ZXJzaW9uIjoiMS4wIiwidXNlcl9pZCI6InN0ZXZlIiwidXNlcl90eXBlIjoiRU1QTE9ZRUUiLCJjbGllbnRfaWQiOiJmN2Q0MjM0OC1jNjQ3LTRlZmItYTUyZC00YzU3ODc0MjFlNzIiLCJjb25zdW1lcl9hcHBsaWNhdGlvbl9pZCI6IjM2MSIsInJlcXVlc3RfdHJhbnNpdCI6IjY3In0.j7O2jEjdXxRz7xum-lUJf7S40sk8ifjOEAMkvzpanLReC3M0vGH0ZYNTP0wvxsg9VuASGayiqDrLluMG4un1uMtMLzbPVELclm89cAMJnx_62Mco1EPzB79vlJOkbLPFxiyxIoDS9ChKX5aDBMsUgYEQU1-1UcLW_-FtvVUDcxxyN9vQE0ygMnq7oADOMqMHlISVQpFRjAO8bLGLI4QiKe17ufgPKCFHOMPxRaEx-fR-APH3hf7nNUGHHiIG9TdxlLGAlZAZY2WNjzVmb76I428_3BnDc1h03XQo6AhJNSLHpeNRxehNrXeQEQQtri46cDGkHDVei972Mn7go1hcFw" ;
     static final String SAMLJWT = "eyJraWQiOiIxMDAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ1cm46Y29tOm5ldHdvcmtudDpvYXV0aDI6djEiLCJhdWQiOiJ1cm46Y29tLm5ldHdvcmtudCIsImV4cCI6MTg1MjMxNDQzMywianRpIjoiT1pQaXhwQ0FVMmtEQ1AzVC1zTzJ2dyIsImlhdCI6MTUzNjk1NDQzMywibmJmIjoxNTM2OTU0MzEzLCJ2ZXJzaW9uIjoiMS4wIiwidXNlcl9pZCI6InN0ZXZlIiwidXNlcl90eXBlIjoiRU1QTE9ZRUUiLCJjbGllbnRfaWQiOiJmN2Q0MjM0OC1jNjQ3LTRlZmItYTUyZC00YzU3ODc0MjFlNzIiLCJjb25zdW1lcl9hcHBsaWNhdGlvbl9pZCI6IjM2MSIsInJlcXVlc3RfdHJhbnNpdCI6IjY3In0.j7O2jEjdXxRz7xum-lUJf7S40sk8ifjOEAMkvzpanLReC3M0vGH0ZYNTP0wvxsg9VuASGayiqDrLluMG4un1uMtMLzbPVELclm89cAMJnx_62Mco1EPzB79vlJOkbLPFxiyxIoDS9ChKX5aDBMsUgYEQU1-1UcLW_-FtvVUDcxxyN9vQE0ygMnq7oADOMqMHlISVQpFRjAO8bLGLI4QiKe17ufgPKCFHOMPxRaEx-fR-APH3hf7nNUGHHiIG9TdxlLGAlZAZY2WNjzVmb76I428_3BnDc1h03XQo6AhJNSLHpeNRxehNrXeQEQQtri46cDGkHDVei972Mn7go1hcFw" ;
 
-    @Ignore
+    @Disabled
     @Test
     public void testGet() throws Exception {
         final Http2Client client = Http2Client.getInstance();
@@ -83,7 +85,7 @@ public class SAMLTokenTest extends BaseRouterTest {
         }
         for (final AtomicReference<ClientResponse> reference : references) {
             String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
-            Assert.assertTrue(body.contains("Server"));
+            Assertions.assertTrue(body.contains("Server"));
         }
     }
 
