@@ -1,3 +1,11 @@
+service.singletons:
+  - com.networknt.utility.Decryptor:
+      - com.networknt.decrypt.AESDecryptor
+  - com.networknt.balance.LoadBalance:
+      - com.networknt.balance.RoundRobinLoadBalance
+  - com.networknt.cluster.Cluster:
+      - com.networknt.cluster.LightCluster
+
 server.serviceId: com.networknt.petstore-1.0.0
 server.environment: dev-proxy
 proxy.containerPort: '9080'
