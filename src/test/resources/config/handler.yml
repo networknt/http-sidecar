@@ -47,9 +47,9 @@ handlers:
   # Rate limit middleware to prevent DDoS attacks externally or throttle requests internally
   - com.networknt.limit.LimitHandler@limit
   # Direct requests to named services based on the request path
-  - com.networknt.router.middleware.SidecarServiceDictHandler@path
-  - com.networknt.router.middleware.SidecarSAMLTokenHandler@saml
-  - com.networknt.router.SidecarRouterHandler@router
+  - com.networknt.router.middleware.GatewayServiceDictHandler@path
+  - com.networknt.router.middleware.GatewaySAMLTokenHandler@saml
+  - com.networknt.router.GatewayRouterHandler@router
   - com.networknt.proxy.LightProxyHandler@proxy
   - com.networknt.proxy.ProxyServerInfoHandler@proxyServerInfo
   # - com.networknt.resource.VirtualHostHandler@virtual
