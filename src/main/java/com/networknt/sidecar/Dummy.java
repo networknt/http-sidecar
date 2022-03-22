@@ -1,4 +1,4 @@
-package com.networknt.gateway;
+package com.networknt.sidecar;
 
 /**
  * This is a dummy class that to force the fat jar to be released.
