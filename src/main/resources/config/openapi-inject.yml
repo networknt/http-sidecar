@@ -81,6 +81,29 @@ paths:
             - admin
             - ${server.serviceId}/admin
 
+  /modules:
+    get:
+      description: to get the all enabled modules/handlers to form a dropdown for module config reload
+      security:
+        - admin-scope:
+            # okta doesn't support either for now
+            # for control pane to access all businesses' admin endpoints
+            - admin
+            # for each business to access their own admin endpoints
+            - ${server.serviceId}/admin
+    post:
+      description: to trigger the config reload for all modules or specified modules selected on control pane
+      requestBody:
+        description: to trigger the reload from the config server from the control pane.
+        required: true
+      security:
+        - admin-scope:
+            # okta doesn't support either for now
+            # for control pane to access all businesses' admin endpoints
+            - admin
+            # for each business to access their own admin endpoints
+            - ${server.serviceId}/admin
+
 components:
   securitySchemes:
     admin-scope:
