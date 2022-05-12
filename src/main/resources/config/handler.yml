@@ -12,7 +12,7 @@ auditOnError: ${handler.auditOnError:false}
 auditStackTrace: ${handler.auditStackTrace:false}
 
 # Base Path of the API endpoints
-basePath: ${handler.basePath:/v1}
+basePath: ${handler.basePath:/}
 
 #------------------------------------------------------------------------------
 # Support individual handler chains for each separate endpoint. It allows framework
@@ -69,24 +69,24 @@ handlers:
   # Customer business domain specific cross-cutting concerns handlers
   # - com.example.validator.CustomizedValidator@custvalidator
   # Framework endpoint handlers
-  - com.networknt.health.HealthGetHandler@health
-  - com.networknt.proxy.ProxyHealthGetHandler@proxyHealth
-  - com.networknt.logging.handler.LoggerGetHandler@getLogger
-  - com.networknt.logging.handler.LoggerPostHandler@postLogger
-  - com.networknt.logging.handler.LoggerGetLogContentsHandler@getLogContents
-  # - com.networknt.metrics.prometheus.PrometheusGetHandler@getprometheus
-  # Chaos Monkey middleware handlers and API handler
+  # Control Pane middleware handlers and API handler
   - com.networknt.chaos.KillappAssaultHandler@killapp
   - com.networknt.chaos.LatencyAssaultHandler@latency
   - com.networknt.chaos.MemoryAssaultHandler@memory
   - com.networknt.chaos.ExceptionAssaultHandler@exchaos
   - com.networknt.chaos.ChaosMonkeyGetHandler@chaosget
   - com.networknt.chaos.ChaosMonkeyPostHandler@chaospost
-  - com.networknt.proxy.ProxyServerInfoHandler@proxyServerInfo
+  - com.networknt.proxy.ProxyHealthGetHandler@proxyHealth
+  - com.networknt.health.HealthGetHandler@health
+  - com.networknt.info.ServerInfoGetHandler@info
+  - com.networknt.logging.handler.LoggerGetHandler@getLogger
+  - com.networknt.logging.handler.LoggerPostHandler@postLogger
+  - com.networknt.logging.handler.LoggerGetLogContentsHandler@getLogContents
+  - com.networknt.config.reload.handler.ModuleRegistryGetHandler@modules
+  - com.networknt.config.reload.handler.ConfigReloadHandler@configReload
   - com.networknt.specification.SpecDisplayHandler@spec
   - com.networknt.specification.SpecSwaggerUIHandler@swaggerui
-  # - com.networknt.metrics.prometheus.PrometheusGetHandler@getprometheus
-  # Business Handlers
+  - com.networknt.specification.FaviconHandler@favicon
 
 chains:
   default:
@@ -180,6 +180,17 @@ paths:
       - admin
       - getLogContents
 
+  - path: '/modules'
+    method: 'get'
+    exec:
+      - modules
+
+  - path: '/modules'
+    method: 'post'
+    exec:
+      - body
+      - configReload
+
   - path: '/chaosmonkey'
     method: 'get'
     exec:
@@ -201,3 +212,7 @@ paths:
     method: 'get'
     exec:
       - swaggerui
+  - path: '/favicon.ico'
+    method: 'get'
+    exec:
+      - favicon
