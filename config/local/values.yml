@@ -80,13 +80,13 @@ handler.chains.default:
   # - cors
   - header
   # - path
-  - token
-  - router
   - specification
   - security
   - proxybody
   - sanitizer
   # - dump
   - validator
+  - token
+  - router
   - proxy
 
