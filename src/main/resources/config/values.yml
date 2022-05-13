@@ -74,6 +74,7 @@ handler.chains.default:
   # - cors
   - header
   # - path
+  # Outgoing traffic does not need to use security and validator. Just get the token and call the router.
   - token
   - router
   - specification
