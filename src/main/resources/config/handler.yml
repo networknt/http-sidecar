@@ -40,7 +40,6 @@ basePath: ${handler.basePath:/}
 # - you can list in chains the fully qualified handler class names, and avoid using the
 #   handlers element altogether
 #------------------------------------------------------------------------------
-
 handlers: ${handler.handlers:}
 
 chains:
@@ -74,13 +73,12 @@ paths:
     method: 'PATCH'
     exec:
       - default
-
-  # The proxy server info will combine the sidecar and backend server info together if it is implemented on the backend.
+  # In most case, the /server/info endpoint shouldn't be exposed. If it is, then it must be protected by OAuth 2.0
   - path: '/server/info'
     method: 'get'
     exec:
       - admin
-      - proxyServerInfo
+      - info
   # the health endpoint for the proxy itself without security, this for both Kubernetes liveness and readiness.
   - path: '/health'
     method: 'get'
@@ -89,11 +87,10 @@ paths:
       - health
   # the health check endpoint called from control plane with security and it will invoke backend optionally.
   - path: '/health/${server.serviceId}'
-    method: 'GET'
+    method: 'get'
     exec:
-      - exception
-      - security
-      - proxyHealth
+      - admin
+      - health
 
   - path: '/logger'
     method: 'get'

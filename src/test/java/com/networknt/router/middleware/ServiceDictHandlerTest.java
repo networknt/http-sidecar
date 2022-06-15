@@ -95,7 +95,12 @@ public class ServiceDictHandlerTest extends BaseServiceHandlerTest {
 
         Map<AbstractMap.SimpleEntry<String, String>, String> result = new HashMap<>();
         for (AbstractMap.SimpleEntry<String, String> pair : expected.keySet()) {
-            result.put(pair, HandlerUtils.findServiceId(toKey(pair), ServiceDictHandler.mappings));
+            String[] serviceEntry = HandlerUtils.findServiceEntry(toKey(pair), ServiceDictConfig.load().getMapping());
+            if(serviceEntry != null) {
+                result.put(pair, serviceEntry[1]);
+            } else {
+                result.put(pair, null);
+            }
         }
 
         Assertions.assertEquals(expected, result);
@@ -106,6 +111,6 @@ public class ServiceDictHandlerTest extends BaseServiceHandlerTest {
     }
     
     private String toKey(AbstractMap.SimpleEntry<String, String> pair) {
-    	return ServiceDictHandler.toInternalKey(pair.getValue(), pair.getKey());
+    	return HandlerUtils.toInternalKey(pair.getValue(), pair.getKey());
     }
 }

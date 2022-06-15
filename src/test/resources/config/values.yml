@@ -1,9 +1,114 @@
 server.serviceId: com.networknt.petstore-1.0.0
 server.environment: dev-proxy
-proxy.containerPort: '9080'
-handler.basePath: /v1
+
+# proxy.yml
+proxy.hosts: http://localhost:18081
+
+# handler.yml
+handler.enabled: true
+handler.basePath: /
+handler.handlers:
+  # Light-framework cross-cutting concerns implemented in the microservice
+  - com.networknt.exception.ExceptionHandler@exception
+  - com.networknt.metrics.MetricsHandler@metrics
+  - com.networknt.traceability.TraceabilityHandler@traceability
+  - com.networknt.correlation.CorrelationHandler@correlation
+  # Cors handler to handler post/put pre-flight. It is not used in the sidecar but only in the router.
+  # - com.networknt.cors.CorsHttpHandler@cors
+  - com.networknt.openapi.OpenApiHandler@specification
+  - com.networknt.openapi.JwtVerifyHandler@security
+  - com.networknt.body.ProxyBodyHandler@proxybody
+  - com.networknt.body.BodyHandler@body
+  - com.networknt.audit.AuditHandler@audit
+  # DumpHandler is to dump detail request/response info to log, useful for troubleshooting but not suggested to use in production due to it may lower the performance
+  # - com.networknt.dump.DumpHandler@dump
+  - com.networknt.sanitizer.SanitizerHandler@sanitizer
+  - com.networknt.openapi.ValidatorHandler@validator
+  # Header middleware to manipulate request and/or response headers before or after downstream server
+  - com.networknt.header.HeaderHandler@header
+  # Rate limit middleware to prevent DDoS attacks externally or throttle requests internally
+  - com.networknt.limit.LimitHandler@limit
+  # Direct requests to named services based on the request path
+  # - com.networknt.router.middleware.PathPrefixServiceHandler@path
+  - com.networknt.router.middleware.GatewayTokenHandler@token
+  - com.networknt.router.GatewayRouterHandler@router
+  - com.networknt.proxy.LightProxyHandler@proxy
+  # Customer business domain specific cross-cutting concerns handlers
+  # - com.example.validator.CustomizedValidator@custvalidator
+  # Framework endpoint handlers
+  # Control Pane middleware handlers and API handler
+  - com.networknt.chaos.KillappAssaultHandler@killapp
+  - com.networknt.chaos.LatencyAssaultHandler@latency
+  - com.networknt.chaos.MemoryAssaultHandler@memory
+  - com.networknt.chaos.ExceptionAssaultHandler@exchaos
+  - com.networknt.chaos.ChaosMonkeyGetHandler@chaosget
+  - com.networknt.chaos.ChaosMonkeyPostHandler@chaospost
+  - com.networknt.proxy.ProxyHealthGetHandler@proxyHealth
+  - com.networknt.health.HealthGetHandler@health
+  - com.networknt.proxy.ProxyServerInfoHandler@info
+  - com.networknt.logging.handler.LoggerGetHandler@getLogger
+  - com.networknt.logging.handler.LoggerPostHandler@postLogger
+  - com.networknt.logging.handler.LoggerGetLogContentsHandler@getLogContents
+  - com.networknt.config.reload.handler.ModuleRegistryGetHandler@modules
+  - com.networknt.config.reload.handler.ConfigReloadHandler@configReload
+  - com.networknt.specification.SpecDisplayHandler@spec
+  - com.networknt.specification.SpecSwaggerUIHandler@swaggerui
+  - com.networknt.specification.FaviconHandler@favicon
+handler.chains.default:
+  - exception
+  - metrics
+  - limit
+  - traceability
+  - correlation
+  - killapp
+  - latency
+  - memory
+  - exchaos
+  - audit
+  # - cors
+  - header
+  # - path
+  # Outgoing traffic does not need to use security and validator. Just get the token and call the router.
+  - token
+  - router
+  - specification
+  - security
+  - proxybody
+  - sanitizer
+  # - dump
+  - validator
+  - proxy
 
 # header.yml
 header.enabled: true
 header.request.update:
   env_tag: dev
+
+# router.yml
+router.hostWhitelist:
+  - 192.168.0.*
+  - 10.1.2.*
+
+# service.yml
+service.singletons:
+  - com.networknt.registry.URL:
+      - com.networknt.registry.URLImpl:
+          protocol: https
+          host: localhost
+          port: 8080
+          path: direct
+          parameters:
+            com.networknt.test-1.0.0: https://localhost:18082?environment=dev
+  - com.networknt.registry.Registry:
+      - com.networknt.registry.support.DirectRegistry
+  - com.networknt.balance.LoadBalance:
+      - com.networknt.balance.RoundRobinLoadBalance
+  - com.networknt.cluster.Cluster:
+      - com.networknt.cluster.LightCluster
+
+# openapi-security.yml
+openapi-security.enableVerifyJwt: false
+openapi-security.keyResolver: X509Certificate
+
+# serviceDict.yml
+serviceDict.mapping: /v1/address@get=party.address-1.0.0&/v2/address@get=party.address-2.0.0&/v1/contact@post=party.contact-1.0.0
