@@ -51,7 +51,7 @@ handler.handlers:
   - com.networknt.chaos.ChaosMonkeyPostHandler@chaospost
   - com.networknt.proxy.ProxyHealthGetHandler@proxyHealth
   - com.networknt.health.HealthGetHandler@health
-  - com.networknt.proxy.ProxyServerInfoHandler@proxyServerInfo
+  - com.networknt.proxy.ProxyServerInfoHandler@info
   - com.networknt.logging.handler.LoggerGetHandler@getLogger
   - com.networknt.logging.handler.LoggerPostHandler@postLogger
   - com.networknt.logging.handler.LoggerGetLogContentsHandler@getLogContents
@@ -85,3 +85,5 @@ handler.chains.default:
   - validator
   - proxy
 
+# openapi-security.yml
+openapi-security.keyResolver: X509Certificate
