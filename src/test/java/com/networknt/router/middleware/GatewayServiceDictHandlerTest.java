@@ -18,8 +18,8 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServiceDictHandlerTest extends BaseServiceHandlerTest {
-    static final Logger logger = LoggerFactory.getLogger(ServiceDictHandlerTest.class);
+public class GatewayServiceDictHandlerTest extends BaseServiceHandlerTest {
+    static final Logger logger = LoggerFactory.getLogger(GatewayServiceDictHandlerTest.class);
 
     static Undertow server = null;
 
