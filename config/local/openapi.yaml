@@ -7,6 +7,37 @@ info:
 servers:
     - url: 'http://books.swagger.io/api'
 paths:
+    /post:
+        post:
+            summary: Create a key/value pair
+            operationId: createKeyValue
+            requestBody:
+                description: create a key value pair
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Key'
+            tags:
+                - key
+            security:
+                - bookstore_auth:
+                      - 'read:books'
+                      - 'write:books'
+            responses:
+                '200':
+                    description: Expected response to a valid request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/KeyValue'
+                default:
+                    description: unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
     /books:
         get:
             summary: List all books
@@ -155,6 +186,23 @@ components:
                         'write:book': modify books in your account
                         'read:book': read your books
     schemas:
+        Key:
+            type: object
+            required:
+                - key
+            properties:
+                key:
+                    type: string
+        Value:
+            type: object
+            required:
+                - key
+                - value
+            properties:
+                key:
+                    type: string
+                value:
+                    type: string
         Book:
             type: object
             required:

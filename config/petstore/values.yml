@@ -1,18 +1,38 @@
+
+serviceDict.mapping:
+  /v1/pets@get: com.networknt.petstore-1.0.0
+  /v2/address@get: party.address-2.0.0
+  /v1/contact@post: party.contact-1.0.0
+
+server.httpPort: 9080
+server.httpsPort: 9445
+server.serviceId: light-mesh-1.0.0
+
+## proxy yaml
+proxy.hosts: http://localhost:8080,https://localhost:8443
+proxy.maxConnectionRetries: 5
+router.hostWhitelist:
+  - 192.168.0.*
+  - localhost
+
+# service.yml
 service.singletons:
-  - com.networknt.utility.Decryptor:
-      - com.networknt.decrypt.AESDecryptor
+  - com.networknt.registry.URL:
+      - com.networknt.registry.URLImpl:
+          parameters:
+            com.networknt.petstore-1.0.0: https://localhost:9443
+  - com.networknt.registry.Registry:
+      - com.networknt.registry.support.DirectRegistry
   - com.networknt.balance.LoadBalance:
       - com.networknt.balance.RoundRobinLoadBalance
   - com.networknt.cluster.Cluster:
       - com.networknt.cluster.LightCluster
+  - com.networknt.utility.Decryptor:
+      - com.networknt.decrypt.AESDecryptor
   - com.networknt.handler.ResponseInterceptor:
       - com.networknt.body.ResponseBodyInterceptor
   - com.networknt.handler.RequestInterceptor:
       - com.networknt.body.RequestBodyInterceptor
-
-server.serviceId: com.networknt.petstore-1.0.0
-server.environment: dev-proxy
-proxy.containerPort: '9080'
 
 # handler.yml
 handler.enabled: true
@@ -27,7 +47,6 @@ handler.handlers:
   # - com.networknt.cors.CorsHttpHandler@cors
   - com.networknt.openapi.OpenApiHandler@specification
   - com.networknt.openapi.JwtVerifyHandler@security
-  - com.networknt.body.ProxyBodyHandler@proxybody
   - com.networknt.body.BodyHandler@body
   - com.networknt.audit.AuditHandler@audit
   # DumpHandler is to dump detail request/response info to log, useful for troubleshooting but not suggested to use in production due to it may lower the performance
@@ -87,12 +106,11 @@ handler.chains.default:
   - token
   - router
   - specification
-  - security
-  - proxybody
+  # - security
   - sanitizer
   # - dump
   - validator
   - proxy
 
-# openapi-security.yml
-openapi-security.keyResolver: X509Certificate
+# openapi-security
+openapi-security.enabled: false

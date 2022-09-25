@@ -17,7 +17,6 @@ handler.handlers:
   # - com.networknt.cors.CorsHttpHandler@cors
   - com.networknt.openapi.OpenApiHandler@specification
   - com.networknt.openapi.JwtVerifyHandler@security
-  - com.networknt.body.ProxyBodyHandler@proxybody
   - com.networknt.body.BodyHandler@body
   - com.networknt.audit.AuditHandler@audit
   # DumpHandler is to dump detail request/response info to log, useful for troubleshooting but not suggested to use in production due to it may lower the performance
@@ -54,6 +53,9 @@ handler.handlers:
   - com.networknt.specification.SpecDisplayHandler@spec
   - com.networknt.specification.SpecSwaggerUIHandler@swaggerui
   - com.networknt.specification.FaviconHandler@favicon
+  - com.networknt.handler.ResponseInterceptorInjectionHandler@responseInterceptor
+  - com.networknt.handler.RequestInterceptorInjectionHandler@requestInterceptor
+
 handler.chains.default:
   - exception
   - metrics
@@ -67,13 +69,14 @@ handler.chains.default:
   - audit
   # - cors
   - header
+  - requestInterceptor
+  - responseInterceptor
   # - path
   # Outgoing traffic does not need to use security and validator. Just get the token and call the router.
   - token
   - router
   - specification
   - security
-  - proxybody
   - sanitizer
   # - dump
   - validator
@@ -105,6 +108,10 @@ service.singletons:
       - com.networknt.balance.RoundRobinLoadBalance
   - com.networknt.cluster.Cluster:
       - com.networknt.cluster.LightCluster
+  - com.networknt.handler.ResponseInterceptor:
+      - com.networknt.body.ResponseBodyInterceptor
+  - com.networknt.handler.RequestInterceptor:
+      - com.networknt.body.RequestBodyInterceptor
 
 # openapi-security.yml
 openapi-security.enableVerifyJwt: false
