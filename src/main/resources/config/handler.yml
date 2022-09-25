@@ -74,61 +74,61 @@ paths:
     exec:
       - default
   # In most case, the /server/info endpoint shouldn't be exposed. If it is, then it must be protected by OAuth 2.0
-  - path: '/server/info'
+  - path: '/adm/server/info'
     method: 'get'
     exec:
       - admin
       - info
   # the health endpoint for the proxy itself without security, this for both Kubernetes liveness and readiness.
-  - path: '/health'
+  - path: '/adm/health'
     method: 'get'
     exec:
       - exception
       - health
   # the health check endpoint called from control plane with security and it will invoke backend optionally.
-  - path: '/health/${server.serviceId}'
+  - path: '/adm/health/${server.serviceId}'
     method: 'get'
     exec:
       - admin
       - health
 
-  - path: '/logger'
+  - path: '/adm/logger'
     method: 'get'
     exec:
       - admin
       - getLogger
 
-  - path: '/logger'
+  - path: '/adm/logger'
     method: 'post'
     exec:
       - admin
       - postLogger
 
-  - path: '/logger/content'
+  - path: '/adm/logger/content'
     method: 'GET'
     exec:
       - admin
       - getLogContents
 
-  - path: '/modules'
+  - path: '/adm/modules'
     method: 'get'
     exec:
       - modules
 
-  - path: '/modules'
+  - path: '/adm/modules'
     method: 'post'
     exec:
       - body
       - configReload
 
-  - path: '/chaosmonkey'
+  - path: '/adm/chaosmonkey'
     method: 'get'
     exec:
       # enable security once we have this endpoint in the spec with a proper scope.
       - admin
       - chaosget
 
-  - path: '/chaosmonkey/{assault}'
+  - path: '/adm/chaosmonkey/{assault}'
     method: 'post'
     exec:
       # enable security once we have this endpoint in the spec with a proper scope.

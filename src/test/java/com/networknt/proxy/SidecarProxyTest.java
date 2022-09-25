@@ -128,7 +128,8 @@ public class SidecarProxyTest {
 
 
     @Test
-    public void testGet() throws Exception {
+    @Disabled
+    public void testMultipleGet() throws Exception {
         final Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(10);
         final ClientConnection connection;
@@ -163,6 +164,33 @@ public class SidecarProxyTest {
             System.out.println(reference.get().getAttachment(Http2Client.RESPONSE_BODY));
             Assertions.assertTrue(reference.get().getAttachment(Http2Client.RESPONSE_BODY).contains("{\"backend\":\"OK\"}"));
         }
+    }
+
+    @Test
+    @Disabled
+    public void testGet() throws Exception {
+        final Http2Client client = Http2Client.getInstance();
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ClientConnection connection;
+        try {
+            connection = client.connect(new URI(url), Http2Client.WORKER, Http2Client.getInstance().getDefaultXnioSsl(), Http2Client.BUFFER_POOL, enableHttp2 ? OptionMap.create(UndertowOptions.ENABLE_HTTP2, true): OptionMap.EMPTY).get();
+        } catch (Exception e) {
+            throw new ClientException(e);
+        }
+        final AtomicReference<ClientResponse> reference = new AtomicReference<>();
+        try {
+            ClientRequest request = new ClientRequest().setPath("/get").setMethod(Methods.GET);
+            request.getRequestHeaders().put(new HttpString("host"), "localhost");
+            connection.sendRequest(request, client.createClientCallback(reference, latch));
+            latch.await();
+        } catch (Exception e) {
+            logger.error("Exception: ", e);
+            throw new ClientException(e);
+        } finally {
+            IoUtils.safeClose(connection);
+        }
+        System.out.println(reference.get().getAttachment(Http2Client.RESPONSE_BODY));
+        Assertions.assertTrue(reference.get().getAttachment(Http2Client.RESPONSE_BODY).contains("{\"backend\":\"OK\"}"));
     }
 
     @Test
@@ -303,9 +331,11 @@ public class SidecarProxyTest {
         }
         int statusCode = reference.get().getResponseCode();
         // as content type and body is mismatched, the body will be ignored.
+        String responseBody = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
+        logger.info("status code = " + statusCode + " response body = " + responseBody);
         Assertions.assertEquals(400, statusCode);
         if (statusCode == 400) {
-            Status status = Config.getInstance().getMapper().readValue(reference.get().getAttachment(Http2Client.RESPONSE_BODY), Status.class);
+            Status status = Config.getInstance().getMapper().readValue(responseBody, Status.class);
             Assertions.assertNotNull(status);
             Assertions.assertEquals("ERR10015", status.getCode());
         }
