@@ -30,7 +30,6 @@ handler.handlers:
   # - com.networknt.cors.CorsHttpHandler@cors
   - com.networknt.openapi.OpenApiHandler@specification
   - com.networknt.openapi.JwtVerifyHandler@security
-  - com.networknt.body.ProxyBodyHandler@proxybody
   - com.networknt.body.BodyHandler@body
   - com.networknt.audit.AuditHandler@audit
   # DumpHandler is to dump detail request/response info to log, useful for troubleshooting but not suggested to use in production due to it may lower the performance
@@ -91,7 +90,6 @@ handler.chains.default:
   - router
   - specification
   - security
-  - proxybody
   - sanitizer
   # - dump
   - validator
