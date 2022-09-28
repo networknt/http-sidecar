@@ -128,7 +128,6 @@ public class SidecarProxyTest {
 
 
     @Test
-    @Disabled
     public void testMultipleGet() throws Exception {
         final Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(10);
@@ -167,7 +166,6 @@ public class SidecarProxyTest {
     }
 
     @Test
-    @Disabled
     public void testGet() throws Exception {
         final Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
