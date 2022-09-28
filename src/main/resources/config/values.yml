@@ -10,9 +10,12 @@ service.singletons:
   - com.networknt.handler.RequestInterceptor:
       - com.networknt.body.RequestBodyInterceptor
 
+# server.yml
 server.serviceId: com.networknt.petstore-1.0.0
 server.environment: dev-proxy
-proxy.containerPort: '9080'
+
+# proxy.yml
+proxy.hosts: http://localhost:9080
 
 # handler.yml
 handler.enabled: true
