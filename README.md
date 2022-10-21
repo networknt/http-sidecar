@@ -65,13 +65,12 @@ will be used for next handler chain.
 
 ```
 cd ~/workspace
-git clone git@github.com:networknt/light-mesh.git
+git clone git@github.com:networknt/http-sidecar.git
 
-cd light-mesh
+cd http-sidecar
 
 mvn clean install
 
-cd http-sidecar
 
 java -jar -Dlight-4j-config-dir=config/local  target/http-sidecar.jar
 
@@ -140,15 +139,7 @@ The petstore light-api will start on local https 8443 port.
 
 - Try the call by using http-sidecar:
 
-#### Egress traffic (http protocol, port 9080)
 
-Send request from service in the pod to light API petstore through sidecar
-
-```
-curl --location --request GET 'http://localhost:9080/v1/pets' \
---header 'Content-Type: application/json' \
---data-raw '{"accountId":1,"transactioType":"DEPOSIT","amount":20}'
-```
 
 #### Ingress traffic (https protocol, port 9445)
 
@@ -157,7 +148,7 @@ Send request from outside service to the service in the pod through sidecar
 ```
 curl --location --request GET 'https://localhost:9445/api/books/' \
 --header 'Content-Type: application/json' \
---data-raw '{"name":"mybook"}'
+
 ```
 
 Leverage schema validation handler cross-cutting concerns
@@ -181,3 +172,12 @@ response:
 ```
 
 
+#### Egress traffic (http protocol, port 9080)
+
+Send request from service in the pod to light API petstore through sidecar
+
+```
+curl --location --request GET 'http://localhost:9080/v1/pets' \
+--header 'Content-Type: application/json' \
+
+```

@@ -55,7 +55,7 @@ Add book:
 
 ```
 URL:   http://localhost:8080/api/books/
-Method: GET
+Method: POST
 request body:
 {"name":"mybook"}
 ```
