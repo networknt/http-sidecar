@@ -181,3 +181,15 @@ curl --location --request GET 'http://localhost:9080/v1/pets' \
 --header 'Content-Type: application/json' \
 
 ```
+
+#### Build native executable docker image
+
+
+Create static link native executable (linux only) with native-image tools of Graalvm, it requires docker installed on your develop machine. The executable is static linked with musl (x86_64) static library. The size of generated docker image around 14M.
+
+```
+mvn clean install
+
+docker build -f docker/Dockerfile.native . -t http-sidecar-native:latest
+
+```

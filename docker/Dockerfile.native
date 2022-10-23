@@ -1,0 +1,43 @@
+FROM ghcr.io/graalvm/graalvm-ce:22.2.0 as build
+
+ARG JARFILE=target/http-sidecar.jar
+
+RUN gu install native-image
+
+RUN mkdir /project && \
+    chmod 775 /project
+    
+WORKDIR /project
+
+COPY docker/lib/* /tmp
+COPY docker/lib/upx /usr/local/bin
+RUN tar -xzf /tmp/x86_64-linux-musl-native.tgz && \
+    rm -f /tmp/x86_64-linux-musl-native.tgz
+    
+ENV TOOLCHAIN_DIR=/project/x86_64-linux-musl-native
+ENV CC=${TOOLCHAIN_DIR}/bin/gcc
+ENV PATH=/project/x86_64-linux-musl-native/bin:$PATH
+
+RUN tar -xzf /tmp/zlib-1.2.13.tar.gz && \
+    rm -f /tmp/zlib-1.2.13.tar.gz && \
+    cd zlib-1.2.13 && \
+    ./configure --prefix=${TOOLCHAIN_DIR} --static && \
+    make && \
+    make install && \
+    cd ..
+
+    
+COPY ${JARFILE} ./application.jar
+
+RUN native-image --static --libc=musl -o application -jar application.jar && \
+    upx --lzma --best -o application.upx application
+    
+
+FROM scratch
+
+COPY --from=build /project/application.upx /application
+
+VOLUME /config
+
+ENTRYPOINT ["./application","-Dlight-4j-config-dir=/config","-Dlogback.configurationFile=/config/logback.xml"]
+
