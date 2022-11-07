@@ -80,7 +80,7 @@ paths:
       - admin
       - info
   # the health endpoint for the proxy itself without security, this for both Kubernetes liveness and readiness.
-  - path: '/adm/health'
+  - path: '/health'
     method: 'get'
     exec:
       - exception
