@@ -121,6 +121,12 @@ paths:
       - body
       - configReload
 
+  - path: '/adm/shutdown'
+    method: 'delete'
+    exec:
+      - admin
+      - shutdown
+
   - path: '/adm/chaosmonkey'
     method: 'get'
     exec:
