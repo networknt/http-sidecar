@@ -55,6 +55,7 @@ handler.handlers:
   - com.networknt.specification.FaviconHandler@favicon
   - com.networknt.handler.ResponseInterceptorInjectionHandler@responseInterceptor
   - com.networknt.handler.RequestInterceptorInjectionHandler@requestInterceptor
+  - com.networknt.server.handler.ServerShutdownHandler@shutdown
 
 handler.chains.default:
   - exception
