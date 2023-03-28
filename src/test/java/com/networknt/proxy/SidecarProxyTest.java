@@ -58,7 +58,7 @@ public class SidecarProxyTest {
     public static TestServer server = TestServer.getInstance();
 
     static final boolean enableHttp2 = server.getServerConfig().isEnableHttp2();
-    static final String url = "https://localhost:8443";
+    static final String url = "https://localhost:18443";
 
     @BeforeAll
     public static void setUp() {
