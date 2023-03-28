@@ -1,4 +1,5 @@
 server.serviceId: com.networknt.petstore-1.0.0
+server.httpsPort: 18443
 server.environment: dev-proxy
 
 # proxy.yml
