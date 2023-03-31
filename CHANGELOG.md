@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.1.9](https://github.com/networknt/http-sidecar/tree/2.1.9) (2023-03-30)
+
+
+**Merged pull requests:**
+
+
 ## [2.0.26](https://github.com/networknt/light-mesh/tree/2.0.26) (2021-04-27)
 
 
