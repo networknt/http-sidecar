@@ -11,6 +11,14 @@
     <description>Http Sidecar</description>
     <url>https://github.com/networknt/http-sidecar</url>
 
+    <developers>
+        <developer>
+            <id>stevehu</id>
+            <name>Steve Hu</name>
+            <email>stevehu@gmail.com</email>
+        </developer>
+    </developers>
+
     <issueManagement>
         <system>github</system>
         <url>https://github.com/networknt/http-sidecar/issues</url>
@@ -71,6 +79,7 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.light-4j>2.1.9</version.light-4j>
+        <version.yaml-rule>1.0.1</version.yaml-rule>
         <version.jackson>2.14.2</version.jackson>
         <version.slf4j>1.7.36</version.slf4j>
         <version.logback>1.2.11</version.logback>
@@ -293,6 +302,47 @@
             <version>${version.light-4j}</version>
         </dependency>
         <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>cors</artifactId>
+            <version>${version.light-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>yaml-rule</artifactId>
+            <version>${version.yaml-rule}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>response-transformer</artifactId>
+            <version>${version.light-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>request-transformer</artifactId>
+            <version>${version.light-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>rule-loader</artifactId>
+            <version>${version.light-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>ip-whitelist</artifactId>
+            <version>${version.light-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>basic-auth</artifactId>
+            <version>${version.light-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>api-key</artifactId>
+            <version>${version.light-4j}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${version.jackson}</version>
@@ -392,6 +442,8 @@
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
                                         <exclude>META-INF/versions/**</exclude>
+                                        <exclude>META-INF/native-image/io.netty/**</exclude>
+                                        <exclude>META-INF/native-image/software.amazon.awssdk/**</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
