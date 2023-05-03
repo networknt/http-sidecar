@@ -30,8 +30,8 @@ handler.handlers:
   - com.networknt.limit.LimitHandler@limit
   # Direct requests to named services based on the request path
   # - com.networknt.router.middleware.PathPrefixServiceHandler@path
-  - com.networknt.router.middleware.GatewayTokenHandler@token
-  - com.networknt.router.GatewayRouterHandler@router
+  - com.networknt.router.middleware.SidecarTokenHandler@token
+  - com.networknt.router.SidecarRouterHandler@router
   - com.networknt.proxy.LightProxyHandler@proxy
   # Customer business domain specific cross-cutting concerns handlers
   # - com.example.validator.CustomizedValidator@custvalidator

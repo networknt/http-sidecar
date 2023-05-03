@@ -27,8 +27,6 @@ service.singletons:
       - com.networknt.balance.RoundRobinLoadBalance
   - com.networknt.cluster.Cluster:
       - com.networknt.cluster.LightCluster
-  - com.networknt.utility.Decryptor:
-      - com.networknt.decrypt.AESDecryptor
   - com.networknt.handler.ResponseInterceptor:
       - com.networknt.body.ResponseBodyInterceptor
   - com.networknt.handler.RequestInterceptor:
