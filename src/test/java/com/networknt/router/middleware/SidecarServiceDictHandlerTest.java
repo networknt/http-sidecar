@@ -18,8 +18,8 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GatewayServiceDictHandlerTest extends BaseServiceHandlerTest {
-    static final Logger logger = LoggerFactory.getLogger(GatewayServiceDictHandlerTest.class);
+public class SidecarServiceDictHandlerTest extends BaseServiceHandlerTest {
+    static final Logger logger = LoggerFactory.getLogger(SidecarServiceDictHandlerTest.class);
 
     static Undertow server = null;
 
@@ -28,7 +28,7 @@ public class GatewayServiceDictHandlerTest extends BaseServiceHandlerTest {
         if(server == null) {
             logger.info("starting server");
             HttpHandler handler = getTestHandler();
-            GatewayServiceDictHandler serviceDictHandler = new GatewayServiceDictHandler();
+            SidecarServiceDictHandler serviceDictHandler = new SidecarServiceDictHandler();
             serviceDictHandler.setNext(handler);
             handler = serviceDictHandler;
             HeaderHandler headerHandler = new HeaderHandler();
