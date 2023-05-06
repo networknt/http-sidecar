@@ -8,6 +8,8 @@
 
 - fixes \#79 add config market for market api to call petstore api [\#80](https://github.com/networknt/http-sidecar/pull/80) ([stevehu](https://github.com/stevehu))
 - fixes \#77 update the dependency and configuration to rename gateway m… [\#78](https://github.com/networknt/http-sidecar/pull/78) ([stevehu](https://github.com/stevehu))
+
+
 ## [2.1.17](https://github.com/networknt/http-sidecar/tree/2.1.17) (2023-05-05)
 
 
