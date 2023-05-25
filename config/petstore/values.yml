@@ -88,32 +88,32 @@ handler.handlers:
 
 handler.chains.default:
   - exception
-  - metrics
+  # - metrics
   - limit
   - traceability
   - correlation
-  - requestInterceptor
-  - responseInterceptor
   - killapp
   - latency
   - memory
   - exchaos
-  - audit
   # - cors
   - header
+  - requestInterceptor
+  - responseInterceptor
   # Outgoing traffic does not need to use security and validator. Just get the token and call the router.
   - path
+  - audit
   - token
   - router
   - specification
-  # - security
+  - security
   - sanitizer
   # - dump
   - validator
   - proxy
 
 # openapi-security
-openapi-security.enabled: false
+openapi-security.enableVerifyJwt: false
 
 # request-injection.yml
 request-injection.appliedBodyInjectionPathPrefixes:
@@ -122,3 +122,11 @@ request-injection.appliedBodyInjectionPathPrefixes:
 # response-injection.yml
 response-injection.appliedBodyInjectionPathPrefixes:
   - /
+
+# header.yml
+header.enabled: true
+header.response.update: Cache-Control:no-store,X-Content-Type-Options:nosniff
+
+# body.yml
+body.logFullRequestBody: true
+body.logFullResponseBody: true
