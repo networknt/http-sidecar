@@ -8,9 +8,10 @@ server.httpPort: 9080
 server.httpsPort: 9445
 server.serviceId: light-mesh-1.0.0
 
-## proxy yaml
-proxy.hosts: http://localhost:8080,https://localhost:8443
-proxy.maxConnectionRetries: 5
+# proxy yml
+proxy.hosts: https://localhost:9443
+
+# router.yml
 router.hostWhitelist:
   - 192.168.0.*
   - localhost
@@ -56,9 +57,9 @@ handler.handlers:
   # Rate limit middleware to prevent DDoS attacks externally or throttle requests internally
   - com.networknt.limit.LimitHandler@limit
   # Direct requests to named services based on the request path
-  # - com.networknt.router.middleware.PathPrefixServiceHandler@path
-  - com.networknt.router.middleware.GatewayTokenHandler@token
-  - com.networknt.router.GatewayRouterHandler@router
+  - com.networknt.router.middleware.SidecarPathPrefixServiceHandler@path
+  - com.networknt.router.middleware.SidecarTokenHandler@token
+  - com.networknt.router.SidecarRouterHandler@router
   - com.networknt.proxy.LightProxyHandler@proxy
   # Customer business domain specific cross-cutting concerns handlers
   # - com.example.validator.CustomizedValidator@custvalidator
@@ -100,8 +101,8 @@ handler.chains.default:
   - audit
   # - cors
   - header
-  # - path
   # Outgoing traffic does not need to use security and validator. Just get the token and call the router.
+  - path
   - token
   - router
   - specification
@@ -113,3 +114,11 @@ handler.chains.default:
 
 # openapi-security
 openapi-security.enabled: false
+
+# request-injection.yml
+request-injection.appliedBodyInjectionPathPrefixes:
+  - /
+
+# response-injection.yml
+response-injection.appliedBodyInjectionPathPrefixes:
+  - /

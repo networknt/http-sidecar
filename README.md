@@ -52,9 +52,9 @@ If you want to use SidecarServiceDictHandler to get the service Id by the path u
 will be used for next handler chain.
   
 ```
-  - com.networknt.router.middleware.GatewayServiceDictHandler@path
-  - com.networknt.router.middleware.GatewaySAMLTokenHandler@saml
-  - com.networknt.router.GatewayRouterHandler@router
+  - com.networknt.router.middleware.SidecarServiceDictHandler@path
+  - com.networknt.router.middleware.SidecarSAMLTokenHandler@saml
+  - com.networknt.router.SidecarRouterHandler@router
 
 ```
 
