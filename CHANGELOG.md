@@ -1,5 +1,13 @@
 # Change Log
 
+## [2.1.19](https://github.com/networknt/http-sidecar/tree/2.1.19) (2023-06-05)
+
+
+**Merged pull requests:**
+
+
+- fixes \#83 update petstore values.yml for chain sequence, header and b… [\#84](https://github.com/networknt/http-sidecar/pull/84) ([stevehu](https://github.com/stevehu))
+- fixes \#81 update the local and petstore configurations [\#82](https://github.com/networknt/http-sidecar/pull/82) ([stevehu](https://github.com/stevehu))
 ## [2.1.18](https://github.com/networknt/http-sidecar/tree/2.1.18) (2023-05-06)
 
 
