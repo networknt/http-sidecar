@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.1.21](https://github.com/networknt/http-sidecar/tree/2.1.21) (2023-06-22)
+
+
+**Merged pull requests:**
+
+
+- fixes \#85 add confg of actuator for spring boot backend loggers endpoint [\#86](https://github.com/networknt/http-sidecar/pull/86) ([stevehu](https://github.com/stevehu))
 ## [2.1.20](https://github.com/networknt/http-sidecar/tree/2.1.20) (2023-06-17)
 
 
