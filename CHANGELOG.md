@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.1.23](https://github.com/networknt/http-sidecar/tree/2.1.23) (2023-07-11)
+
+
+**Merged pull requests:**
+
+
+- Issue87 [\#88](https://github.com/networknt/http-sidecar/pull/88) ([stevehu](https://github.com/stevehu))
 ## [2.1.22](https://github.com/networknt/http-sidecar/tree/2.1.22) (2023-06-22)
 
 
