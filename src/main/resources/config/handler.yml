@@ -83,18 +83,25 @@ paths:
     exec:
       - admin
       - info
-  # the health endpoint for the proxy itself without security, this for both Kubernetes liveness and readiness.
+  # the health endpoint for the proxy itself without security, this for both Kubernetes liveness and readiness of sidecar. It does NOT proxy health to downstream backend.
   - path: '/health'
     method: 'get'
     exec:
       - exception
       - health
-  # the health check endpoint called from control plane with security and it will invoke backend optionally.
-  - path: '/adm/health/${server.serviceId}'
+  # the health endpoint for the proxy + downstream backend if enabled without security, this is for teams to monitor overall API health via third party tools or via Control Plane
+  - path: '/health/${server.serviceId}'
     method: 'get'
     exec:
-      - admin
-      - health
+      - exception
+      - proxyHealth
+  # DEPRECATED - Control Plane can use above path instead
+  # the health check endpoint called from control plane with security and it will invoke backend optionally.
+#  - path: '/adm/health/${server.serviceId}'
+#    method: 'get'
+#    exec:
+#      - admin
+#      - health
 
   - path: '/adm/logger'
     method: 'get'
