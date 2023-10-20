@@ -94,6 +94,7 @@ paths:
     method: 'get'
     exec:
       - exception
+      - limit
       - proxyHealth
   # DEPRECATED - Control Plane can use above path instead
   # the health check endpoint called from control plane with security and it will invoke backend optionally.
