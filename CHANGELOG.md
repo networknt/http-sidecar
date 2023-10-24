@@ -7,6 +7,8 @@
 
 
 - including proxyHealth path [\#89](https://github.com/networknt/http-sidecar/pull/89) ([DiogoFKT](https://github.com/DiogoFKT))
+
+
 ## [2.1.27](https://github.com/networknt/http-sidecar/tree/2.1.27) (2023-10-04)
 
 
