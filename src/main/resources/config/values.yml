@@ -7,6 +7,8 @@ service.singletons:
       - com.networknt.body.ResponseBodyInterceptor
   - com.networknt.handler.RequestInterceptor:
       - com.networknt.body.RequestBodyInterceptor
+  - com.networknt.cache.CacheManager:
+      - com.networknt.cache.CaffeineCacheManager
 
 # server.yml
 server.serviceId: com.networknt.petstore-1.0.0
@@ -96,3 +98,12 @@ handler.chains.default:
 
 # openapi-security.yml
 openapi-security.keyResolver: X509Certificate
+
+# cache.yml
+cache.caches:
+  - cacheName: jwt
+    expiryInMinutes: 15
+    maxSize: 100
+  - cacheName: jwk
+    expiryInMinutes: 129600
+    maxSize: 100

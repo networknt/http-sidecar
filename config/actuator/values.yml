@@ -30,6 +30,8 @@ service.singletons:
       - com.networknt.body.ResponseBodyInterceptor
   - com.networknt.handler.RequestInterceptor:
       - com.networknt.body.RequestBodyInterceptor
+  - com.networknt.cache.CacheManager:
+      - com.networknt.cache.CaffeineCacheManager
 
 # handler.yml
 handler.enabled: true
@@ -133,3 +135,12 @@ body.logFullResponseBody: true
 logging.downstreamEnabled: true
 logging.downstreamHost: http://localhost:8080
 logging.downstreamFramework: SpringBoot
+
+# cache.yml
+cache.caches:
+  - cacheName: jwt
+    expiryInMinutes: 15
+    maxSize: 100
+  - cacheName: jwk
+    expiryInMinutes: 129600
+    maxSize: 100

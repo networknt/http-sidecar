@@ -32,6 +32,8 @@ service.singletons:
       - com.networknt.body.ResponseBodyInterceptor
   - com.networknt.handler.RequestInterceptor:
       - com.networknt.body.RequestBodyInterceptor
+  - com.networknt.cache.CacheManager:
+      - com.networknt.cache.CaffeineCacheManager
 
 # handler.yml
 handler.enabled: true
@@ -114,3 +116,12 @@ handler.chains.default:
 
 # openapi-security
 openapi-security.enabled: false
+
+# cache.yml
+cache.caches:
+  - cacheName: jwt
+    expiryInMinutes: 15
+    maxSize: 100
+  - cacheName: jwk
+    expiryInMinutes: 129600
+    maxSize: 100
