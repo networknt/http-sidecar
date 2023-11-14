@@ -32,6 +32,8 @@ service.singletons:
       - com.networknt.body.ResponseBodyInterceptor
   - com.networknt.handler.RequestInterceptor:
       - com.networknt.body.RequestBodyInterceptor
+  - com.networknt.cache.CacheManager:
+      - com.networknt.cache.CaffeineCacheManager
 
 # handler.yml
 handler.enabled: true
@@ -130,3 +132,12 @@ header.response.update: Cache-Control:no-store,X-Content-Type-Options:nosniff
 # body.yml
 body.logFullRequestBody: true
 body.logFullResponseBody: true
+
+# cache.yml
+cache.caches:
+  - cacheName: jwt
+    expiryInMinutes: 15
+    maxSize: 100
+  - cacheName: jwk
+    expiryInMinutes: 129600
+    maxSize: 100
