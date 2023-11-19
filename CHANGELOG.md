@@ -10,6 +10,8 @@
 - fixes \#94 refactor based on the ServerConfig change [\#95](https://github.com/networknt/http-sidecar/pull/95) ([stevehu](https://github.com/stevehu))
 - fixes  \#92 add addDefaultImplementationEntries to maven jar plugin [\#93](https://github.com/networknt/http-sidecar/pull/93) ([stevehu](https://github.com/stevehu))
 - Issue90 [\#91](https://github.com/networknt/http-sidecar/pull/91) ([stevehu](https://github.com/stevehu))
+
+
 ## [2.1.28](https://github.com/networknt/http-sidecar/tree/2.1.28) (2023-10-24)
 
 
