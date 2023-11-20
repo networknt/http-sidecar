@@ -46,7 +46,6 @@ import static io.undertow.Handlers.path;
 @ExtendWith(TestServer.class)
 public class BaseRouterTest {
     public  static final Logger logger = LoggerFactory.getLogger(BaseRouterTest.class);
-    public static final String CONFIG_NAME = "server";
     static Undertow server1 = null;
     public static TestServer server = TestServer.getInstance();
     public static ServerConfig config = ServerConfig.getInstance();
