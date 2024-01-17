@@ -1,9 +1,20 @@
 # Change Log
 
-## [2.1.30](https://github.com/networknt/http-sidecar/tree/2.1.30) (2023-11-20)
+## [2.1.31](https://github.com/networknt/http-sidecar/tree/2.1.31) (2024-01-16)
 
 
 **Merged pull requests:**
+
+
+- fixes \#99 update the Dockerfile to change the base image [\#100](https://github.com/networknt/http-sidecar/pull/100) ([stevehu](https://github.com/stevehu))
+
+
+## [2.1.30](https://github.com/networknt/http-sidecar/tree/2.1.30) (2023-11-21)
+
+
+**Merged pull requests:**
+
+
 
 
 ## [2.1.29](https://github.com/networknt/http-sidecar/tree/2.1.29) (2023-11-19)
