@@ -115,7 +115,7 @@
   "name":"ch.qos.logback.classic.turbo.MarkerFilter",
   "queryAllPublicMethods":true,
   "methods":[
-    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"<init>","parameterTypes":[] },
     {"name":"setMarker","parameterTypes":["java.lang.String"] }
   ]
 },
@@ -135,7 +135,7 @@
 {
   "name":"ch.qos.logback.core.encoder.LayoutWrappingEncoder",
   "methods":[
-    {"name":"setImmediateFlush","parameterTypes":["boolean"] }, 
+    {"name":"setImmediateFlush","parameterTypes":["boolean"] },
     {"name":"setParent","parameterTypes":["ch.qos.logback.core.spi.ContextAware"] }
   ]
 },
@@ -147,8 +147,8 @@
   "name":"ch.qos.logback.core.rolling.FixedWindowRollingPolicy",
   "queryAllPublicMethods":true,
   "methods":[
-    {"name":"<init>","parameterTypes":[] }, 
-    {"name":"setMaxIndex","parameterTypes":["int"] }, 
+    {"name":"<init>","parameterTypes":[] },
+    {"name":"setMaxIndex","parameterTypes":["int"] },
     {"name":"setMinIndex","parameterTypes":["int"] }
   ]
 },
@@ -156,16 +156,16 @@
   "name":"ch.qos.logback.core.rolling.RollingFileAppender",
   "queryAllPublicMethods":true,
   "methods":[
-    {"name":"<init>","parameterTypes":[] }, 
-    {"name":"setFile","parameterTypes":["java.lang.String"] }, 
-    {"name":"setRollingPolicy","parameterTypes":["ch.qos.logback.core.rolling.RollingPolicy"] }, 
+    {"name":"<init>","parameterTypes":[] },
+    {"name":"setFile","parameterTypes":["java.lang.String"] },
+    {"name":"setRollingPolicy","parameterTypes":["ch.qos.logback.core.rolling.RollingPolicy"] },
     {"name":"setTriggeringPolicy","parameterTypes":["ch.qos.logback.core.rolling.TriggeringPolicy"] }
   ]
 },
 {
   "name":"ch.qos.logback.core.rolling.RollingPolicyBase",
   "methods":[
-    {"name":"setFileNamePattern","parameterTypes":["java.lang.String"] }, 
+    {"name":"setFileNamePattern","parameterTypes":["java.lang.String"] },
     {"name":"setParent","parameterTypes":["ch.qos.logback.core.FileAppender"] }
   ]
 },
@@ -173,7 +173,7 @@
   "name":"ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy",
   "queryAllPublicMethods":true,
   "methods":[
-    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"<init>","parameterTypes":[] },
     {"name":"setMaxFileSize","parameterTypes":["ch.qos.logback.core.util.FileSize"] }
   ]
 },
@@ -216,7 +216,7 @@
 {
   "name":"com.github.benmanes.caffeine.cache.PS",
   "fields":[
-    {"name":"key"}, 
+    {"name":"key"},
     {"name":"value"}
   ]
 },
@@ -473,7 +473,7 @@
   "queryAllPublicMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[
-    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"<init>","parameterTypes":[] },
     {"name":"setParameters","parameterTypes":["java.util.Map"] }
   ]
 },
@@ -943,10 +943,10 @@
   "name":"net.logstash.logback.composite.loggingevent.LoggingEventJsonProviders",
   "queryAllPublicMethods":true,
   "methods":[
-    {"name":"<init>","parameterTypes":[] }, 
-    {"name":"addPattern","parameterTypes":["net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider"] }, 
-    {"name":"addRootStackTraceElement","parameterTypes":["net.logstash.logback.composite.loggingevent.RootStackTraceElementJsonProvider"] }, 
-    {"name":"addStackTrace","parameterTypes":["net.logstash.logback.composite.loggingevent.StackTraceJsonProvider"] }, 
+    {"name":"<init>","parameterTypes":[] },
+    {"name":"addPattern","parameterTypes":["net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider"] },
+    {"name":"addRootStackTraceElement","parameterTypes":["net.logstash.logback.composite.loggingevent.RootStackTraceElementJsonProvider"] },
+    {"name":"addStackTrace","parameterTypes":["net.logstash.logback.composite.loggingevent.StackTraceJsonProvider"] },
     {"name":"addTimestamp","parameterTypes":["net.logstash.logback.composite.loggingevent.LoggingEventFormattedTimestampJsonProvider"] }
   ]
 },
@@ -969,18 +969,18 @@
   "name":"net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder",
   "queryAllPublicMethods":true,
   "methods":[
-    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"<init>","parameterTypes":[] },
     {"name":"setProviders","parameterTypes":["net.logstash.logback.composite.JsonProviders"] }
   ]
 },
 {
   "name":"org.jboss.threads.EnhancedQueueExecutor",
   "fields":[
-    {"name":"activeCount"}, 
-    {"name":"peakQueueSize"}, 
-    {"name":"peakThreadCount"}, 
-    {"name":"queueSize"}, 
-    {"name":"sequence"}, 
+    {"name":"activeCount"},
+    {"name":"peakQueueSize"},
+    {"name":"peakThreadCount"},
+    {"name":"queueSize"},
+    {"name":"sequence"},
     {"name":"terminationWaiters"}
   ]
 },
@@ -991,7 +991,7 @@
 {
   "name":"org.jboss.threads.EnhancedQueueExecutor$PoolThreadNode",
   "fields":[
-    {"name":"parked"}, 
+    {"name":"parked"},
     {"name":"task"}
   ]
 },
@@ -1002,7 +1002,7 @@
 {
   "name":"org.jboss.threads.EnhancedQueueExecutorBase1",
   "fields":[
-    {"name":"tail"}, 
+    {"name":"tail"},
     {"name":"tailLock"}
   ]
 },
