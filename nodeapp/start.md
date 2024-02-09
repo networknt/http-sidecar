@@ -59,4 +59,3 @@ Method: POST
 request body:
 {"name":"mybook"}
 ```
-

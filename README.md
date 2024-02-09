@@ -1,18 +1,18 @@
-## http-sidecar:   
+## http-sidecar:
 
-http-sidecar can be deployed as sidecar container run in parallel with the main container in the pod. 
+http-sidecar can be deployed as sidecar container run in parallel with the main container in the pod.
 
-The http-sidecar sidecar service will handle proxy and router the ingress/egress traffic for the service in main container, and can delegate the Cross-Cutting Concerns handlers for the service in main container. 
+The http-sidecar sidecar service will handle proxy and router the ingress/egress traffic for the service in main container, and can delegate the Cross-Cutting Concerns handlers for the service in main container.
 
- 
+
   - http-sidecar
-  
+
     http-sidecar can be deployed as sidecar container/service to handle restful request/response related functionalities which include:
-     
+
      - Package and deployed as separate module to handle Cross-Cutting Concerns for main container/service in the same pod. In this case, the main service only need care about the http request/response and business logic
-     
+
      - Ingress traffic: client API request will come to sidecar service first, sidecar service act as a proxy to delegate light client features, which include, openapi schema validation, observability, monitoring, logging, JWT verify, etc. Then forward the request to main service.
-      
+
      - Egress traffic: main service call sidecar service first for egress traffic; in this case, sidecar service act as a router to delegate light client features, which include service discovery, SSL handshake, JWT token management, etc. Then forward the request to server API.
 
 
@@ -35,7 +35,7 @@ Segregating the functionalities of an application into a separate process can be
 
 In software architecture a sidecar attach to a parent application and extends/enhances its functionalities. A sidecar is loosely coupled with the main application.
 
-In Kubernetes cluster environment, sidecar can be deployed as Sidecar container run in parallel with the main container in the pod.  
+In Kubernetes cluster environment, sidecar can be deployed as Sidecar container run in parallel with the main container in the pod.
 
 
 ### Benefits of Using a Sidecar Pattern:
@@ -50,7 +50,7 @@ In Kubernetes cluster environment, sidecar can be deployed as Sidecar container 
 
 If you want to use SidecarServiceDictHandler to get the service Id by the path url mapping from serviceDict.yml, add it before token handlers and router handler. The service Id get from serviceDict
 will be used for next handler chain.
-  
+
 ```
   - com.networknt.router.middleware.SidecarServiceDictHandler@path
   - com.networknt.router.middleware.SidecarSAMLTokenHandler@saml
@@ -86,9 +86,9 @@ In reverse way, the ingress traffic (from outside of pod to call the service API
 
 
 
-- Start Nodejs restful API (It is simulate the service in the Pod) 
+- Start Nodejs restful API (It is simulate the service in the Pod)
 
-Follow the [steps](nodeapp/start.md) to start Nodejs books store restful API. The Nodejs api will start on local port: 8080 
+Follow the [steps](nodeapp/start.md) to start Nodejs books store restful API. The Nodejs api will start on local port: 8080
 
 We can verify the Nodejs restful API directly with curl command:
 
@@ -134,7 +134,7 @@ java -jar target/petstore-service-api-3.0.1.jar
 
 ```
 
-The petstore light-api will start on local https 8443 port. 
+The petstore light-api will start on local https 8443 port.
 
 
 - Try the call by using http-sidecar:
