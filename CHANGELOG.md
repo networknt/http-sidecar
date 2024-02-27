@@ -1,5 +1,15 @@
 # Change Log
 
+## [2.1.32](https://github.com/networknt/http-sidecar/tree/2.1.32) (2024-02-27)
+
+
+**Merged pull requests:**
+
+
+- fixes \#106 remove the values.yml from src resource config [\#107](https://github.com/networknt/http-sidecar/pull/107) ([stevehu](https://github.com/stevehu))
+- [pre-commit.ci] pre-commit autoupdate [\#105](https://github.com/networknt/http-sidecar/pull/105) ([pre-commit-ci](https://github.com/apps/pre-commit-ci))
+- fixes \#103 add pre-commit hook and apply it [\#104](https://github.com/networknt/http-sidecar/pull/104) ([stevehu](https://github.com/stevehu))
+- fixes \#101 update test cases based on the HandlerUtils package change [\#102](https://github.com/networknt/http-sidecar/pull/102) ([stevehu](https://github.com/stevehu))
 ## [2.1.31](https://github.com/networknt/http-sidecar/tree/2.1.31) (2024-01-16)
 
 
