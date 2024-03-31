@@ -1,5 +1,14 @@
 # Change Log
 
+## [2.1.33](https://github.com/networknt/http-sidecar/tree/2.1.33) (2024-03-31)
+
+
+**Merged pull requests:**
+
+
+- fixes \#108 change logger-config to logger-handler in pom.xml [\#109](https://github.com/networknt/http-sidecar/pull/109) ([stevehu](https://github.com/stevehu))
+
+
 ## [2.1.32](https://github.com/networknt/http-sidecar/tree/2.1.32) (2024-02-27)
 
 
