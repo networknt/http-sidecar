@@ -1,6 +1,6 @@
 package com.networknt.router.middleware;
 
-import com.networknt.handler.HandlerUtils;
+import com.networknt.handler.config.HandlerUtils;
 import com.networknt.header.HeaderHandler;
 import com.networknt.httpstring.HttpStringConstants;
 import io.undertow.Handlers;
