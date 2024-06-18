@@ -74,6 +74,7 @@ handler.handlers:
   - com.networknt.proxy.ProxyHealthGetHandler@proxyHealth
   - com.networknt.health.HealthGetHandler@health
   - com.networknt.proxy.ProxyServerInfoHandler@info
+  - com.networknt.cache.CacheExplorerHandler@cache
   - com.networknt.logging.handler.LoggerGetHandler@getLogger
   - com.networknt.logging.handler.LoggerPostHandler@postLogger
   - com.networknt.logging.handler.LoggerGetLogContentsHandler@getLogContents

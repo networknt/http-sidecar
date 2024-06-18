@@ -139,6 +139,12 @@ paths:
       - admin
       - shutdown
 
+  - path: '/adm/cache/{name}'
+    method: 'get'
+    exec:
+      - admin
+      - cache
+
   - path: '/adm/chaosmonkey'
     method: 'get'
     exec:
