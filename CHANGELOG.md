@@ -1,5 +1,14 @@
 # Change Log
 
+## [2.1.34](https://github.com/networknt/http-sidecar/tree/2.1.34) (2024-06-22)
+
+
+**Merged pull requests:**
+
+
+- fixes \#114 update pom.xml, values.yml and handler.yml for cache admin… [\#115](https://github.com/networknt/http-sidecar/pull/115) ([stevehu](https://github.com/stevehu))
+- fixes \#112 update package for HandlerUtils after refactoring [\#113](https://github.com/networknt/http-sidecar/pull/113) ([stevehu](https://github.com/stevehu))
+- [pre-commit.ci] pre-commit autoupdate [\#111](https://github.com/networknt/http-sidecar/pull/111) ([pre-commit-ci](https://github.com/apps/pre-commit-ci))
 ## [2.1.33](https://github.com/networknt/http-sidecar/tree/2.1.33) (2024-03-31)
 
 
