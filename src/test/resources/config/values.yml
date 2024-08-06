@@ -111,8 +111,8 @@ service.singletons:
       - com.networknt.body.RequestBodyInterceptor
 
 # openapi-security.yml
-openapi-security.enableVerifyJwt: false
-openapi-security.keyResolver: X509Certificate
+security.enableVerifyJwt: false
+security.keyResolver: X509Certificate
 
 # direct-registry.yml
 direct-registry.directUrls:
