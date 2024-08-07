@@ -117,8 +117,8 @@ handler.chains.default:
   - validator
   - proxy
 
-# openapi-security
-openapi-security.enabled: false
+# security.yml
+security.enabled: false
 
 # cache.yml
 cache.caches:

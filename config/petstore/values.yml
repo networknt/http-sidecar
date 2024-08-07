@@ -115,8 +115,8 @@ handler.chains.default:
   - validator
   - proxy
 
-# openapi-security
-openapi-security.enableVerifyJwt: false
+# security.yml
+security.enableVerifyJwt: false
 
 # request-injection.yml
 request-injection.appliedBodyInjectionPathPrefixes:

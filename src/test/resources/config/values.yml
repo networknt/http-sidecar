@@ -110,7 +110,7 @@ service.singletons:
   - com.networknt.handler.RequestInterceptor:
       - com.networknt.body.RequestBodyInterceptor
 
-# openapi-security.yml
+# security.yml
 security.enableVerifyJwt: false
 security.keyResolver: X509Certificate
 
