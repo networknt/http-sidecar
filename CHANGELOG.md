@@ -1,5 +1,13 @@
 # Change Log
 
+## [2.1.35](https://github.com/networknt/http-sidecar/tree/2.1.35) (2024-08-17)
+
+
+**Merged pull requests:**
+
+
+- fixes \#118 update values.yml to change openapi-security to security [\#119](https://github.com/networknt/http-sidecar/pull/119) ([stevehu](https://github.com/stevehu))
+- fixes \#203 update test values.yml to security instead of openapi-secu… [\#117](https://github.com/networknt/http-sidecar/pull/117) ([stevehu](https://github.com/stevehu))
 ## [2.1.34](https://github.com/networknt/http-sidecar/tree/2.1.34) (2024-06-22)
 
 
