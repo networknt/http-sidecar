@@ -142,3 +142,9 @@ cache.caches:
   - cacheName: jwk
     expiryInMinutes: 129600
     maxSize: 100
+
+# chaos-monkey.yml
+chaos-monkey.enabled: true
+
+# latency-assault.yml
+latency-assault.enabled: true
