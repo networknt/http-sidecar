@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk-alpine:11 as packager
+FROM azul/zulu-openjdk-alpine:17 as packager
 
 RUN { \
         java --version ; \
@@ -8,11 +8,14 @@ RUN { \
 
 ENV JAVA_MINIMAL=/opt/jre
 
+# Install binutils for objcopy
+RUN apk add --no-cache binutils
+
 # build modules distribution
 RUN $JAVA_HOME/bin/jlink \
     --verbose \
     --add-modules \
-        java.base,java.sql,java.naming,java.desktop,java.xml,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.unsupported,java.management,java.security.jgss,java.net.http,java.net.http \
+        java.base,java.sql,java.naming,java.desktop,java.xml,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.unsupported,java.management,java.security.jgss,java.net.http \
     --compress 2 \
     --strip-debug \
     --no-header-files \
