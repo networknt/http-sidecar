@@ -1,5 +1,14 @@
 # Change Log
 
+## [2.2.0](https://github.com/networknt/http-sidecar/tree/2.2.0) (2025-02-11)
+
+
+**Merged pull requests:**
+
+
+- fixes \#121 update config petstore to enable chaos-monkey and latency-… [\#122](https://github.com/networknt/http-sidecar/pull/122) ([stevehu](https://github.com/stevehu))
+
+
 ## [2.1.37](https://github.com/networknt/http-sidecar/tree/2.1.37) (2024-09-20)
 
 
