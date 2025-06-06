@@ -102,6 +102,7 @@
         <version.maven-surefire>2.22.2</version.maven-surefire>
         <version.maven-source>3.1.0</version.maven-source>
         <version.nexus-staging-maven>1.7.0</version.nexus-staging-maven>
+        <version.maven-gpg>3.2.7</version.maven-gpg>
     </properties>
 
     <dependencies>
@@ -560,7 +561,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
+                        <version>${version.maven-gpg}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
