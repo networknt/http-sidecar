@@ -1,6 +1,7 @@
 package com.networknt.router.middleware;
 
 import com.networknt.client.Http2Client;
+import com.networknt.client.simplepool.SimpleConnectionHolder;
 import com.networknt.exception.ClientException;
 import com.networknt.httpstring.HttpStringConstants;
 import io.undertow.UndertowOptions;
@@ -31,12 +32,19 @@ public class BaseServiceHandlerTest {
         String url = "http://localhost:8080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
-        final ClientConnection connection;
+        final SimpleConnectionHolder.ConnectionToken token;
+
         try {
-            connection = client.connect(new URI(url), Http2Client.WORKER, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
+
+            token = client.borrow(new URI(url), Http2Client.WORKER, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
+
         } catch (Exception e) {
+
             throw new ClientException(e);
+
         }
+
+        final ClientConnection connection = (ClientConnection) token.getRawConnection();
         final AtomicReference<ClientResponse> reference = new AtomicReference<>();
         try {
             ClientRequest request = new ClientRequest().setPath("/v1/address/111").setMethod(Methods.GET);
@@ -47,7 +55,9 @@ public class BaseServiceHandlerTest {
             logger.error("Exception: ", e);
             throw new ClientException(e);
         } finally {
-            IoUtils.safeClose(connection);
+
+            client.restore(token);
+
         }
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
@@ -65,12 +75,19 @@ public class BaseServiceHandlerTest {
         String url = "http://localhost:8080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
-        final ClientConnection connection;
+        final SimpleConnectionHolder.ConnectionToken token;
+
         try {
-            connection = client.connect(new URI(url), Http2Client.WORKER, Http2Client.getInstance().getDefaultXnioSsl(), Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
+
+            token = client.borrow(new URI(url), Http2Client.WORKER, Http2Client.getInstance().getDefaultXnioSsl(), Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
+
         } catch (Exception e) {
+
             throw new ClientException(e);
+
         }
+
+        final ClientConnection connection = (ClientConnection) token.getRawConnection();
         final AtomicReference<ClientResponse> reference = new AtomicReference<>();
         try {
             ClientRequest request = new ClientRequest().setPath("/v2/address").setMethod(Methods.GET);
@@ -81,7 +98,9 @@ public class BaseServiceHandlerTest {
             logger.error("Exception: ", e);
             throw new ClientException(e);
         } finally {
-            IoUtils.safeClose(connection);
+
+            client.restore(token);
+
         }
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
@@ -99,12 +118,19 @@ public class BaseServiceHandlerTest {
         String url = "http://localhost:8080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
-        final ClientConnection connection;
+        final SimpleConnectionHolder.ConnectionToken token;
+
         try {
-            connection = client.connect(new URI(url), Http2Client.WORKER, Http2Client.getInstance().getDefaultXnioSsl(), Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
+
+            token = client.borrow(new URI(url), Http2Client.WORKER, Http2Client.getInstance().getDefaultXnioSsl(), Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
+
         } catch (Exception e) {
+
             throw new ClientException(e);
+
         }
+
+        final ClientConnection connection = (ClientConnection) token.getRawConnection();
         final AtomicReference<ClientResponse> reference = new AtomicReference<>();
         try {
             ClientRequest request = new ClientRequest().setPath("/v1/contact").setMethod(Methods.POST);
@@ -117,7 +143,9 @@ public class BaseServiceHandlerTest {
             logger.error("Exception: ", e);
             throw new ClientException(e);
         } finally {
-            IoUtils.safeClose(connection);
+
+            client.restore(token);
+
         }
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
@@ -136,12 +164,19 @@ public class BaseServiceHandlerTest {
         String url = "http://localhost:8080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
-        final ClientConnection connection;
+        final SimpleConnectionHolder.ConnectionToken token;
+
         try {
-            connection = client.connect(new URI(url), Http2Client.WORKER, Http2Client.getInstance().getDefaultXnioSsl(), Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
+
+            token = client.borrow(new URI(url), Http2Client.WORKER, Http2Client.getInstance().getDefaultXnioSsl(), Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
+
         } catch (Exception e) {
+
             throw new ClientException(e);
+
         }
+
+        final ClientConnection connection = (ClientConnection) token.getRawConnection();
         final AtomicReference<ClientResponse> reference = new AtomicReference<>();
         try {
             ClientRequest request = new ClientRequest().setPath("/v1/bad/path").setMethod(Methods.POST);
@@ -154,7 +189,9 @@ public class BaseServiceHandlerTest {
             logger.error("Exception: ", e);
             throw new ClientException(e);
         } finally {
-            IoUtils.safeClose(connection);
+
+            client.restore(token);
+
         }
         int statusCode = reference.get().getResponseCode();
         Assertions.assertEquals(404, statusCode);
@@ -166,12 +203,19 @@ public class BaseServiceHandlerTest {
         String url = "http://localhost:8080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
-        final ClientConnection connection;
+        final SimpleConnectionHolder.ConnectionToken token;
+
         try {
-            connection = client.connect(new URI(url), Http2Client.WORKER, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
+
+            token = client.borrow(new URI(url), Http2Client.WORKER, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
+
         } catch (Exception e) {
+
             throw new ClientException(e);
+
         }
+
+        final ClientConnection connection = (ClientConnection) token.getRawConnection();
         final AtomicReference<ClientResponse> reference = new AtomicReference<>();
         try {
             ClientRequest request = new ClientRequest().setPath("/v1/address/111").setMethod(Methods.GET);
@@ -185,7 +229,9 @@ public class BaseServiceHandlerTest {
             logger.error("Exception: ", e);
             throw new ClientException(e);
         } finally {
-            IoUtils.safeClose(connection);
+
+            client.restore(token);
+
         }
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);

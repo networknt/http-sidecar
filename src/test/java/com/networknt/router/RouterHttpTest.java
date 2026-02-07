@@ -17,6 +17,7 @@
 package com.networknt.router;
 
 import com.networknt.client.Http2Client;
+import com.networknt.client.simplepool.SimpleConnectionHolder;
 import com.networknt.exception.ClientException;
 import com.networknt.httpstring.HttpStringConstants;
 import io.undertow.UndertowOptions;
@@ -38,22 +39,31 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Disabled
-public class RouterHttpTest extends BaseRouterTest{
+public class RouterHttpTest extends BaseRouterTest {
 
     /**
      * Calling server1 directly to ensure that the endpoint is working.
+     * 
      * @throws Exception
      */
     @Test
     public void testServer1() throws Exception {
         final Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
-        final ClientConnection connection;
+        final SimpleConnectionHolder.ConnectionToken token;
+
         try {
-            connection = client.connect(new URI("https://localhost:18082"), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
+
+            token = client.borrow(new URI("https://localhost:18082"), Http2Client.WORKER, Http2Client.SSL,
+                    Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
+
         } catch (Exception e) {
+
             throw new ClientException(e);
+
         }
+
+        final ClientConnection connection = (ClientConnection) token.getRawConnection();
         final AtomicReference<ClientResponse> reference = new AtomicReference<>();
         try {
             ClientRequest request = new ClientRequest().setPath("/v2/address").setMethod(Methods.GET);
@@ -64,7 +74,9 @@ public class RouterHttpTest extends BaseRouterTest{
             logger.error("Exception: ", e);
             throw new ClientException(e);
         } finally {
-            IoUtils.safeClose(connection);
+
+            client.restore(token);
+
         }
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
@@ -74,15 +86,17 @@ public class RouterHttpTest extends BaseRouterTest{
         }
     }
 
-
     @Test
     public void testGet() throws Exception {
         final Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(10);
         final ClientConnection connection;
+        SimpleConnectionHolder.ConnectionToken token = null;
         logger.debug("url = " + url);
         try {
-            connection = client.connect(new URI(url), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, enableHttp2 ? OptionMap.create(UndertowOptions.ENABLE_HTTP2, true): OptionMap.EMPTY).get();
+            token = client.borrow(new URI(url), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL,
+                    enableHttp2 ? OptionMap.create(UndertowOptions.ENABLE_HTTP2, true) : OptionMap.EMPTY);
+            connection = (ClientConnection) token.getRawConnection();
         } catch (Exception e) {
             throw new ClientException(e);
         }
@@ -108,15 +122,16 @@ public class RouterHttpTest extends BaseRouterTest{
             logger.error("Exception: ", e);
             throw new ClientException(e);
         } finally {
-            IoUtils.safeClose(connection);
+
+            client.restore(token);
+
         }
         for (final AtomicReference<ClientResponse> reference : references) {
             String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
-            if(logger.isDebugEnabled()) logger.debug("body = " + body);
+            if (logger.isDebugEnabled())
+                logger.debug("body = " + body);
             Assertions.assertTrue(body.contains("Server"));
         }
     }
-
-
 
 }
