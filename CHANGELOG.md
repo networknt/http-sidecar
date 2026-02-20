@@ -7,6 +7,8 @@
 
 
 - Added WebSocket & GenAI Handlers [\#132](https://github.com/networknt/http-sidecar/pull/132) ([KalevGonvick](https://github.com/KalevGonvick))
+
+
 ## [2.3.2](https://github.com/networknt/http-sidecar/tree/2.3.2) (2026-02-02)
 
 
