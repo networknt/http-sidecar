@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.3.3](https://github.com/networknt/http-sidecar/tree/2.3.3) (2026-02-19)
+
+
+**Merged pull requests:**
+
+
+- Added WebSocket & GenAI Handlers [\#132](https://github.com/networknt/http-sidecar/pull/132) ([KalevGonvick](https://github.com/KalevGonvick))
 ## [2.3.2](https://github.com/networknt/http-sidecar/tree/2.3.2) (2026-02-02)
 
 
