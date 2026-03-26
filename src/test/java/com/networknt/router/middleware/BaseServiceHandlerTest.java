@@ -29,7 +29,7 @@ public class BaseServiceHandlerTest {
 
     @Test
     public void testV1Address() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:18080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final SimpleConnectionState.ConnectionToken token;
@@ -72,7 +72,7 @@ public class BaseServiceHandlerTest {
 
     @Test
     public void testV2Address() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:18080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final SimpleConnectionState.ConnectionToken token;
@@ -115,7 +115,7 @@ public class BaseServiceHandlerTest {
 
     @Test
     public void testV1Contact() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:18080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final SimpleConnectionState.ConnectionToken token;
@@ -161,7 +161,7 @@ public class BaseServiceHandlerTest {
 
     @Test
     public void testBadPath() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:18080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final SimpleConnectionState.ConnectionToken token;
@@ -200,7 +200,7 @@ public class BaseServiceHandlerTest {
 
     @Test
     public void testServiceIdHeaderOverride() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:18080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final SimpleConnectionState.ConnectionToken token;

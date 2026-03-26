@@ -36,7 +36,7 @@ public class SidecarServiceDictHandlerTest extends BaseServiceHandlerTest {
             headerHandler.setNext(handler);
             handler = headerHandler;
             server = Undertow.builder()
-                    .addHttpListener(8080, "localhost")
+                    .addHttpListener(18080, "localhost")
                     .setHandler(handler)
                     .build();
             server.start();
