@@ -1,0 +1,66 @@
+# Container fragment for embedding http-sidecar in an API Deployment.
+# This is not a standalone Kubernetes resource.
+- name: http-sidecar
+  image: ${sidecar.image.repository:networknt/http-sidecar}:${sidecar.image.tag:2.2.1}
+  imagePullPolicy: ${sidecar.image.pullPolicy:IfNotPresent}
+  env:
+    - name: LIGHT_4J_CONFIG_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: ${name:openapi-petstore}-bootstrap
+          key: light-4j-config-password
+    - name: LIGHT_CONFIG_SERVER_URI
+      value: ${configServer.uri:https://light-config-server:8435}
+    - name: CONFIG_SERVER_CLIENT_TRUSTSTORE_LOCATION
+      value: /config/bootstrap.truststore
+    - name: CONFIG_SERVER_CLIENT_TRUSTSTORE_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: ${name:openapi-petstore}-bootstrap
+          key: config-server-client-truststore-password
+    - name: CONFIG_SERVER_CLIENT_VERIFY_HOST_NAME
+      value: "${configServer.verifyHostName:false}"
+    - name: LIGHT_PORTAL_AUTHORIZATION
+      valueFrom:
+        secretKeyRef:
+          name: ${name:openapi-petstore}-bootstrap
+          key: sidecar-light-portal-authorization
+    - name: LIGHT_ENV
+      value: ${lightEnv:dev}
+    - name: JAVA_TOOL_OPTIONS
+      value: ${sidecar.javaToolOptions:-XX:MaxRAMPercentage=75.0}
+  ports:
+    - name: sidecar-https
+      containerPort: ${sidecar.ports.https:9445}
+      protocol: TCP
+    - name: sidecar-http
+      containerPort: ${sidecar.ports.http:9080}
+      protocol: TCP
+  readinessProbe:
+    tcpSocket:
+      port: sidecar-https
+    initialDelaySeconds: ${sidecar.probes.readinessInitialDelaySeconds:10}
+    periodSeconds: ${sidecar.probes.readinessPeriodSeconds:10}
+  livenessProbe:
+    tcpSocket:
+      port: sidecar-https
+    initialDelaySeconds: ${sidecar.probes.livenessInitialDelaySeconds:30}
+    periodSeconds: ${sidecar.probes.livenessPeriodSeconds:20}
+  resources:
+    requests:
+      memory: ${sidecar.resources.requests.memory:256Mi}
+      cpu: ${sidecar.resources.requests.cpu:100m}
+    limits:
+      memory: ${sidecar.resources.limits.memory:768Mi}
+      cpu: ${sidecar.resources.limits.cpu:1000m}
+  volumeMounts:
+    - name: sidecar-config-workdir
+      mountPath: /config
+    - name: sidecar-config
+      mountPath: /config/startup.yml
+      subPath: startup.yml
+      readOnly: true
+    - name: bootstrap
+      mountPath: /config/bootstrap.truststore
+      subPath: bootstrap.truststore
+      readOnly: true
