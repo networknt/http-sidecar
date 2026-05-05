@@ -1,0 +1,295 @@
+# server.yml
+server.serviceId: com.networknt.petstore-lpsc-3.1.0
+server.enableHttp: true
+server.httpPort: 18080
+server.httpsPort: 18443
+server.environment: dev
+server.enableRegistry: true
+server.startOnRegistryFailure: true
+portalRegistry.portalUrl: https://localhost:8438
+
+# client.yml
+client.tokenKeyEnableHttp2: false
+client.injectCallerId: true
+client.verifyHostname: false
+client.tokenKeyServerUrl: https://localhost:6881
+client.tokenKeyUri: /oauth2/AZZRJE52eXu3t1hseacnGQ/keys
+
+# security.yml
+security.enableH2c: false
+security.bootstrapFromKeyService: true
+security.enableVerifyJwt: false
+
+# unified-security.yml
+unified-security.anonymousPrefixes:
+  - /v1
+unified-security.pathPrefixAuths:
+  - prefix: /
+    jwt: true
+
+# request-injection.yml
+request-injection.appliedBodyInjectionPathPrefixes:
+  - /
+
+# service.yml
+service.singletons:
+  - com.networknt.registry.URL:
+    - com.networknt.registry.URLImpl
+  - com.networknt.portal.registry.client.PortalRegistryClient:
+    - com.networknt.portal.registry.client.PortalRegistryClientImpl
+  - com.networknt.registry.Registry:
+    - com.networknt.portal.registry.PortalRegistry
+  - com.networknt.balance.LoadBalance:
+    - com.networknt.balance.RoundRobinLoadBalance
+  - com.networknt.cluster.Cluster:
+    - com.networknt.cluster.LightCluster
+  - com.networknt.cache.CacheManager:
+    - com.networknt.cache.CaffeineCacheManager
+  - com.networknt.handler.RequestInterceptor:
+    - com.networknt.body.RequestBodyInterceptor
+
+# header.yml
+header.enabled: true
+header.response.update: Cache-Control:no-store,X-Content-Type-Options:nosniff
+header.response.remove: X-Powered-By
+
+# handler.yml
+handler.handlers:
+  # Light-framework cross-cutting concerns implemented in the microservice
+  - com.networknt.exception.ExceptionHandler@exception
+  - com.networknt.metrics.APMMetricsHandler@metrics
+  #- com.networknt.traceability.TraceabilityHandler@traceability
+  - com.networknt.correlation.CorrelationHandler@correlation
+  # Cors handler to handler post/put pre-flight. It is not used in the sidecar but only in the router.
+  # - com.networknt.cors.CorsHttpHandler@cors
+  - com.networknt.openapi.OpenApiHandler@specification
+  - com.networknt.cache.CacheExplorerHandler@cache
+  - com.networknt.security.UnifiedSecurityHandler@security
+  - com.networknt.openapi.JwtVerifyHandler@jwt
+  - com.networknt.openapi.SimpleJwtVerifyHandler@sjwt
+  - com.networknt.openapi.SwtVerifyHandler@swt
+  - com.networknt.apikey.ApiKeyHandler@apikey
+  - com.networknt.body.BodyHandler@body
+  - com.networknt.audit.AuditHandler@audit
+  # DumpHandler is to dump detail request/response info to log, useful for troubleshooting but not suggested to use in production due to it may lower the performance
+  # - com.networknt.dump.DumpHandler@dump
+  - com.networknt.sanitizer.SanitizerHandler@sanitizer
+  - com.networknt.openapi.ValidatorHandler@validator
+  # Header middleware to manipulate request and/or response headers before or after downstream server
+  - com.networknt.header.HeaderHandler@header
+  # Rate limit middleware to prevent DDoS attacks externally or throttle requests internally
+  - com.networknt.limit.LimitHandler@limit
+  # Direct requests to named services based on the request path
+  - com.networknt.router.middleware.SidecarPathPrefixServiceHandler@prefix
+  - com.networknt.router.middleware.SidecarTokenHandler@token
+  - com.networknt.router.SidecarRouterHandler@router
+  - com.networknt.proxy.LightProxyHandler@proxy
+  # Customer business domain specific cross-cutting concerns handlers
+  # - com.example.validator.CustomizedValidator@custvalidator
+  # Framework endpoint handlers
+  # Control Pane middleware handlers and API handler
+  - com.networknt.chaos.KillappAssaultHandler@killapp
+  - com.networknt.chaos.LatencyAssaultHandler@latency
+  - com.networknt.chaos.MemoryAssaultHandler@memory
+  - com.networknt.chaos.ExceptionAssaultHandler@exchaos
+  - com.networknt.chaos.ChaosMonkeyGetHandler@chaosget
+  - com.networknt.chaos.ChaosMonkeyPostHandler@chaospost
+  - com.networknt.proxy.ProxyHealthGetHandler@proxyHealth
+  - com.networknt.health.HealthGetHandler@health
+  - com.networknt.proxy.ProxyServerInfoHandler@info
+  - com.networknt.logging.handler.LoggerGetHandler@getLogger
+  - com.networknt.logging.handler.LoggerPostHandler@postLogger
+  - com.networknt.logging.handler.LoggerGetLogContentsHandler@getLogContents
+  - com.networknt.config.reload.handler.ModuleRegistryGetHandler@modules
+  - com.networknt.config.reload.handler.ConfigReloadHandler@configReload
+  - com.networknt.specification.SpecDisplayHandler@spec
+  - com.networknt.specification.SpecSwaggerUIHandler@swaggerui
+  - com.networknt.specification.FaviconHandler@favicon
+  - com.networknt.handler.ResponseInterceptorInjectionHandler@responseInterceptor
+  - com.networknt.handler.RequestInterceptorInjectionHandler@requestInterceptor
+  - com.networknt.server.handler.ServerShutdownHandler@shutdown
+
+handler.chains:
+  default:
+    - exception
+    - prefix
+    - metrics
+    - limit
+    # - traceability
+    - correlation
+    - killapp
+    - latency
+    - memory
+    - exchaos
+    # - cors
+    - header
+    - requestInterceptor
+    # - responseInterceptor
+    - audit
+    # Outgoing traffic does not need to use security and validator. Just get the token and call the router.
+    - token
+    - router
+    - specification
+    - security
+    - sanitizer
+    # - dump
+    - validator
+    - proxy
+
+  admin:
+    - exception
+    - correlation
+    - specification
+    - security
+    - body
+    - validator
+
+handler.paths:
+  - path: '/*'
+    method: 'GET'
+    exec:
+      - default
+  - path: '/*'
+    method: 'POST'
+    exec:
+      - default
+  - path: '/*'
+    method: 'PUT'
+    exec:
+      - default
+  - path: '/*'
+    method: 'DELETE'
+    exec:
+      - default
+  - path: '/*'
+    method: 'PATCH'
+    exec:
+      - default
+  - path: '/*'
+    method: 'OPTIONS'
+    exec:
+      - default
+  # In most case, the /server/info endpoint shouldn't be exposed. If it is, then it must be protected by OAuth 2.0
+  - path: '/adm/server/info'
+    method: 'get'
+    exec:
+      - admin
+      - info
+  # the health endpoint for the proxy itself without security, this for both Kubernetes liveness and readiness of sidecar. It does NOT proxy health to downstream backend.
+  - path: '/health'
+    method: 'get'
+    exec:
+      - exception
+      - health
+  # the health endpoint for the proxy + downstream backend if enabled without security, this is for teams to monitor overall API health via third party tools or via Control Plane
+  - path: '/health/${server.serviceId}'
+    method: 'get'
+    exec:
+      - exception
+      - limit
+      - proxyHealth
+  # DEPRECATED - Control Plane can use above path instead
+  # the health check endpoint called from control plane with security and it will invoke backend optionally.
+  #  - path: '/adm/health/${server.serviceId}'
+  #    method: 'get'
+  #    exec:
+  #      - admin
+  #      - health
+
+  - path: '/adm/logger'
+    method: 'get'
+    exec:
+      - admin
+      - getLogger
+
+  - path: '/adm/logger'
+    method: 'post'
+    exec:
+      - admin
+      - postLogger
+
+  - path: '/adm/logger/content'
+    method: 'GET'
+    exec:
+      - admin
+      - getLogContents
+
+  - path: '/adm/modules'
+    method: 'get'
+    exec:
+      - modules
+
+  - path: '/adm/modules'
+    method: 'post'
+    exec:
+      - body
+      - configReload
+
+  - path: '/adm/shutdown'
+    method: 'delete'
+    exec:
+      - admin
+      - shutdown
+
+  - path: '/adm/cache/{name}'
+    method: 'get'
+    exec:
+      - admin
+      - cache
+
+  - path: '/adm/chaosmonkey'
+    method: 'get'
+    exec:
+      # enable security once we have this endpoint in the spec with a proper scope.
+      - admin
+      - chaosget
+
+  - path: '/adm/chaosmonkey/{assault}'
+    method: 'post'
+    exec:
+      # enable security once we have this endpoint in the spec with a proper scope.
+      - admin
+      - chaospost
+  - path: '/spec.yaml'
+    method: 'get'
+    exec:
+      - spec
+  - path: '/specui.html'
+    method: 'get'
+    exec:
+      - swaggerui
+  - path: '/favicon.ico'
+    method: 'get'
+    exec:
+      - favicon
+
+
+# metrics.yml
+metrics.enabled: false
+metrics.serverHost: opentracing.caapm.svc.cluster.local
+metrics.serverPort: 8888
+metrics.serverPath: /apm/metricFeed
+metrics.productName: Light Proxy
+metrics.sendIssuer: true
+metrics.issuerRegex: /([^/]+)$
+
+# proxy.yml
+proxy.apiId: '0100'
+proxy.hosts: http://localhost:9080
+proxy.http2Enabled: false
+proxy.metricsInjection: true
+proxy.maxRequestTime: 10000
+
+# router.yml
+router.http2Enabled: false
+router.metricsInjection: true
+router.maxRequestTime: 10000
+
+# cache.yml
+cache.caches:
+  - cacheName: jwt
+    expiryInMinutes: 11
+    maxSize: 100
+  - cacheName: jwk
+    expiryInMinutes: 129600
+    maxSize: 100
