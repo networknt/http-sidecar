@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk-alpine:17 as packager
+FROM amazoncorretto:25-alpine as packager
 
 RUN { \
         java --version ; \
@@ -16,7 +16,7 @@ RUN $JAVA_HOME/bin/jlink \
     --verbose \
     --add-modules \
         java.base,java.sql,java.naming,java.desktop,java.xml,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.unsupported,java.management,java.security.jgss,java.net.http \
-    --compress 2 \
+    --compress zip-9 \
     --strip-debug \
     --no-header-files \
     --no-man-pages \
