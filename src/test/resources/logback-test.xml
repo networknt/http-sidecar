@@ -16,8 +16,6 @@
   -->
 
 <configuration>
-    TODO create logger for audit only.
-    http://stackoverflow.com/questions/2488558/logback-to-log-different-messages-to-two-files
     <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
         <Marker>PROFILER</Marker>
         <!--<OnMatch>DENY</OnMatch>-->
@@ -59,15 +57,15 @@
         </triggeringPolicy>
     </appender>
 
-    <root level="error">
+    <root level="info">
         <appender-ref ref="stdout"/>
     </root>
 
-    <logger name="com.networknt" level="error">
+    <logger name="com.networknt" level="info">
         <appender-ref ref="log"/>
     </logger>
 
-    <logger name="Audit" level="error" additivity="false">
+    <logger name="Audit" level="info" additivity="false">
         <appender-ref ref="audit"/>
     </logger>
 
