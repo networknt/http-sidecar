@@ -1,1 +1,1 @@
-This is the configuration to use the sidecar with the local nodeapp as the backend API. For starting the backend server, please visit the project README.md page.
+This is the configuration to use the sidecar with a local backend API. By default, ingress traffic is proxied to `http://localhost:8080`. Update `proxy.hosts` in `values.yml` if your backend uses a different address.

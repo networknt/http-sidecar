@@ -78,7 +78,7 @@ java -jar -Dlight-4j-config-dir=config/local  target/http-sidecar.jar
 ```
 
 The http-sidecar service will start on http port 9080 and https port 9445. In the kubernetes multiple containers situation, the http-sidecar service will be deployed as sidecar container with the service API in same pod.
-The service API could use any technologies, like NodeJs, .nets, php service...; The sidecar container (http-sidecar service) will handle the ingress and egress traffic to the pod and leverage light-4j cross-cutting concerns and client module features.
+The service API could use any technology. The sidecar container (http-sidecar service) will handle the ingress and egress traffic to the pod and leverage light-4j cross-cutting concerns and client module features.
 
 In the k8s pod, the egress network traffic will http protocol(from service API container to sidecar container), and the traffic will be forwarded by sidecar container (delegate light-router features) to downsteam API.
 
@@ -86,36 +86,11 @@ In reverse way, the ingress traffic (from outside of pod to call the service API
 
 
 
-- Start Nodejs restful API (It is simulate the service in the Pod)
+- Start or configure a backend service
 
-Follow the [steps](nodeapp/start.md) to start Nodejs books store restful API. The Nodejs api will start on local port: 8080
-
-We can verify the Nodejs restful API directly with curl command:
-
-```
-Get:
-
-curl --location --request GET 'http://localhost:8080/api/books/' \
---header 'Content-Type: application/json' \
---data-raw '{"name":"mybook"}'
-
-Post:
-
-curl --location --request POST 'http://localhost:8080/api/books/' \
---header 'Content-Type: application/json' \
---data-raw '{"title":"Newbook"}'
-
-Put:
-
-curl --location --request POST 'http://localhost:8080/api/books/' \
---header 'Content-Type: application/json' \
---data-raw '{"title":"Newbook"}'
-
-Delete:
-
-curl --location --request DELETE 'http://localhost:8080/api/books/4' \
---header 'Content-Type: application/json' \
-```
+The local configuration profile proxies ingress traffic to `http://localhost:8080`.
+Run your backend service on that port, or update `proxy.hosts` in `config/local/values.yml`
+to point to the service you want to place behind the sidecar.
 
 
 - Start a sample light-4j API from light-example-4j (It is simulate the outside service which service in the Pod need to call):
