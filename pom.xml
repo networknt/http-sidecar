@@ -89,6 +89,7 @@
         <version.logback>1.6.3</version.logback>
         <version.jose4j>0.9.7</version.jose4j>
         <version.junit>5.11.4</version.junit>
+        <version.mockito>5.24.0</version.mockito>
         <version.undertow>2.4.1.Final</version.undertow>
         <version.json-schema-validator>2.0.7</version.json-schema-validator>
         <version.logstash>7.3</version.logstash>
@@ -427,8 +428,8 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-inline</artifactId>
-            <version>3.8.0</version>
+            <artifactId>mockito-core</artifactId>
+            <version>${version.mockito}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
