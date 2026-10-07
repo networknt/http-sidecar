@@ -1,5 +1,26 @@
 # Change Log
 
+## [2.4.0](https://github.com/networknt/http-sidecar/tree/2.4.0) (2026-10-07)
+
+**Commits:**
+
+- upgrade to version 2.4.0 before release in master branch ([2e4f1ac](https://github.com/networknt/http-sidecar/commit/2e4f1ac01f1f8a215b75c94e7d20f77f71ac66a7)) (by Steve Hu)
+- upgrade maven-javadoc to 3.12.0 from 3.4.1 ([68e15de](https://github.com/networknt/http-sidecar/commit/68e15de89bb853af84fe4bf55c9973d24da9c12f)) (by Steve Hu)
+- upgrade maven-version to 2.22.0 from 2.4 ([dd68d77](https://github.com/networknt/http-sidecar/commit/dd68d77e6e7ff9dc0e5f66c36c610bd2a505ccdd)) (by Steve Hu)
+- upgrade mockito to 5.24.0 ([28a8f97](https://github.com/networknt/http-sidecar/commit/28a8f97a81b67df79edc647bfdc4b0b88bff51f6)) (by Steve Hu)
+- upgrade slf4j to 2.0.20 from 2.0.19 ([56b825d](https://github.com/networknt/http-sidecar/commit/56b825d07abdc33983f763d7914c10fc571972d2)) (by Steve Hu)
+- upgrade jose4j to 0.9.7 from 0.9.6 ([3179bb9](https://github.com/networknt/http-sidecar/commit/3179bb97436440c1850962afcd666dfb085ffb0d)) (by Steve Hu)
+- upgrade jackson to 2.22.3 from 2.22.1 ([8d92c1b](https://github.com/networknt/http-sidecar/commit/8d92c1bc989e1edd954132459ad8d8efe008e9cb)) (by Steve Hu)
+- upgrade to version 2.3.8-SNAPSHOT after release in master branch ([6d62308](https://github.com/networknt/http-sidecar/commit/6d623085ddc156d70e0b0c0403a544ddfd1e8ff9)) (by Steve Hu)
+- upgrade slf4j to 2.0.19 from 2.0.17 ([47d9604](https://github.com/networknt/http-sidecar/commit/47d9604e76b87a6b43d85e6b2ba91f7afbccaf33)) (by Steve Hu)
+- upgrade logback to 1.6.3 from 1.5.37 ([2c0be05](https://github.com/networknt/http-sidecar/commit/2c0be05ceb87bb7b41f2aedf23560b7bb68d605d)) (by Steve Hu)
+- Remove obsolete javadoc-packagelist-maven-plugin workaround ([f07fa07](https://github.com/networknt/http-sidecar/commit/f07fa07717b911ca3f2642a2599dd214d14bdd81)) (by Steve Hu)
+- upgrade central-publishing-maven to 0.11.0 from 0.7.0 ([3315432](https://github.com/networknt/http-sidecar/commit/3315432219abecfb054f92d8f3d40707c01b0d3a)) (by Steve Hu)
+- upgrade maven-jar to 3.5.1 from 3.1.2 ([338a603](https://github.com/networknt/http-sidecar/commit/338a6035d54c30111446e84fbb892288592f0664)) (by Steve Hu)
+- update json-schema-validator version to 2.0.7 ([9df3970](https://github.com/networknt/http-sidecar/commit/9df39702c7d6f6209244f06bb65a48451389ceef)) (by Steve Hu)
+- update json-schema-validator version to 2.0.5 ([6a7d59e](https://github.com/networknt/http-sidecar/commit/6a7d59ef63412bc81b17efa1604bfddcc91d6a5c)) (by Steve Hu)
+- upgrade to version 2.3.8-SNAPSHOT after release in master branch ([f821f86](https://github.com/networknt/http-sidecar/commit/f821f86e185277f840e6f7005dd52d00f22f45f3)) (by Steve Hu)
+
 ## [2.3.7](https://github.com/networknt/http-sidecar/tree/2.3.7) (2026-08-12)
 
 
