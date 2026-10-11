@@ -1,5 +1,22 @@
 # Change Log
 
+## [2.4.1](https://github.com/networknt/http-sidecar/tree/2.4.1) (2026-10-11)
+
+**Commits:**
+
+- upgrade to version 2.4.1 before release in master branch ([cae74f4](https://github.com/networknt/http-sidecar/commit/cae74f45492e5c3f21367c4219b2c105e83b7e34)) (by Steve Hu)
+- downgrade logstash to 8.1 from 9.0 ([ac22603](https://github.com/networknt/http-sidecar/commit/ac22603c66339d5a1f4d3285b5c18c66dcbfed15)) (by Steve Hu)
+- upgrade maven-shade to 3.6.2 from 3.2.1 ([6f1f734](https://github.com/networknt/http-sidecar/commit/6f1f734aeea61b7173073f370f325555dba03a92)) (by Steve Hu)
+- upgrade exec-maven to 3.6.4 from 1.6.0 ([00f2e88](https://github.com/networknt/http-sidecar/commit/00f2e88bafce8cb45c83895da8645188b9d0441a)) (by Steve Hu)
+- upgrade maven-gpg to 3.2.8 from 3.2.7 ([00fe53e](https://github.com/networknt/http-sidecar/commit/00fe53eed3aa8a85a39079b3bb94dab0cdcbcdbe)) (by Steve Hu)
+- upgrade maven-source to 3.4.0 ([d2a8748](https://github.com/networknt/http-sidecar/commit/d2a8748a465c66809354129368bdf73b2a1cc1f1)) (by Steve Hu)
+- upgrade logstash to 9.0 from 7.3 ([ee7e52d](https://github.com/networknt/http-sidecar/commit/ee7e52d8326781f8099b8923b7f8ab580dd181f6)) (by Steve Hu)
+- build: upgrade JUnit to 6.1.3 ([0a0df15](https://github.com/networknt/http-sidecar/commit/0a0df15c6dd5b3c043c095295303040b79e853f2)) (by Steve Hu)
+- upgrade udertow to 2.4.4.Final from 2.4.1.Final ([9583374](https://github.com/networknt/http-sidecar/commit/9583374a429c946ca249bfbe8489b1642a803d81)) (by Steve Hu)
+- upgrade logback to 1.6.5 from 1.6.3 ([9a62da9](https://github.com/networknt/http-sidecar/commit/9a62da97acf0da0194eea444b3b31478a010550f)) (by Steve Hu)
+- upgrade json-schema-validator to 2.0.8 from 2.0.7 ([0a1b028](https://github.com/networknt/http-sidecar/commit/0a1b028ae7dc1f80ea7024bb46deecdb6e5de47a)) (by Steve Hu)
+- upgrade to version 2.4.1-SNAPSHOT after release in master branch ([e2aafc4](https://github.com/networknt/http-sidecar/commit/e2aafc4b55eb98f2fee1d568a9e775b24bb39e35)) (by Steve Hu)
+
 ## [2.4.0](https://github.com/networknt/http-sidecar/tree/2.4.0) (2026-10-07)
 
 **Commits:**
