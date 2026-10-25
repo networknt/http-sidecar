@@ -83,15 +83,15 @@
         <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.light-4j>2.4.2-SNAPSHOT</version.light-4j>
-        <version.yaml-rule>2.0.1</version.yaml-rule>
-        <version.jackson>2.22.3</version.jackson>
+        <version.yaml-rule>4.0.0-SNAPSHOT</version.yaml-rule>
+        <version.jackson>3.2.3</version.jackson>
         <version.slf4j>2.0.20</version.slf4j>
         <version.logback>1.6.5</version.logback>
         <version.jose4j>0.9.7</version.jose4j>
         <version.junit>6.1.3</version.junit>
         <version.mockito>5.24.0</version.mockito>
         <version.undertow>2.4.4.Final</version.undertow>
-        <version.json-schema-validator>2.0.8</version.json-schema-validator>
+        <version.json-schema-validator>3.0.8</version.json-schema-validator>
         <version.logstash>8.1</version.logstash>
         <versions.maven-version>2.23.0</versions.maven-version>
         <version.maven-javadoc>3.12.0</version.maven-javadoc>
@@ -116,7 +116,7 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson</groupId>
+                <groupId>tools.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
                 <version>${version.jackson}</version>
                 <type>pom</type>
@@ -397,11 +397,11 @@
             <version>${version.light-4j}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
         </dependency>
         <dependency>

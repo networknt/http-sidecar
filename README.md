@@ -168,3 +168,9 @@ mvn clean install
 docker build -f docker/Dockerfile.native . -t http-sidecar-native:latest
 
 ```
+
+## Jackson 3 source line
+
+This line requires the Jackson 3 framework snapshots, Jackson 3.2.3, json-schema-validator 3.0.8 and yaml-rule 4.0.0-SNAPSHOT. Build the migrated prerequisites from source before this application; old snapshot binaries can have incompatible Config mapper descriptors. Jackson annotations retain their com.fasterxml.jackson.annotation package. Framework mapper defaults are preserved; classic SnakeYAML cleanup is deferred.
+
+Rebuild the chaos-monkey latency-assault prerequisite on its Jackson 3 line before qualifying the final distribution. Local tests and mapper parity do not imply deployed integration or remote CI qualification.
