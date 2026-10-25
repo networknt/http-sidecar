@@ -182,3 +182,9 @@ Rebuild the chaos-monkey latency-assault prerequisite on its Jackson 3 line befo
 The optional `source_refs` workflow-dispatch input replays recorded full SHAs. GitHub enables dispatch only after the workflow exists on the default branch; before merge, reproduce from the recorded source checkouts locally. A green local suite is separate from a successful remote source-build run.
 
 Logstash Encoder is now 9.0 (Jackson 3). Jackson 2 databind/core/jsr310 still enter through latency-assault until the chaos-monkey migration is qualified; this PR remains a draft. `ChaosMonkeyBinaryGuardTest` audits the handler actually present on the application classpath and rejects its old Config mapper ABI. Its independently frozen Maven Central 2.4.1 class is a negative control. A freshly rebuilt source dependency passing this test does not qualify an older published jar. Do not deploy the Jackson 2 chaos-monkey binaries with Jackson 3 Config.
+
+### Exact-source CI qualification
+
+Consumer CI requires the latest full-core workflow for the exact resolved light-4j SHA to have completed successfully. Pending, failed or missing core qualification blocks the build. The core workflow continues to run its full reactor tests; consumers install that qualified source and run their own full tests and other prerequisite suites. `core-qualification.json` records the accepted run.
+
+The full dependency ledger is audited across all groups. Every NetworkNT release and snapshot must be source-installed, apart from the explicitly SHA-256-pinned Jackson 3 validator release. Known Jackson 2 yaml-rule and chaos-monkey releases are rejected even with a local-install marker. Jackson 2 dependencies in other groups are reported; ready migrations reject them except shared annotations.
