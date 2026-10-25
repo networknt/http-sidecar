@@ -174,3 +174,11 @@ docker build -f docker/Dockerfile.native . -t http-sidecar-native:latest
 This line requires the Jackson 3 framework snapshots, Jackson 3.2.3, json-schema-validator 3.0.8 and yaml-rule 4.0.0-SNAPSHOT. Build the migrated prerequisites from source before this application; old snapshot binaries can have incompatible Config mapper descriptors. Jackson annotations retain their com.fasterxml.jackson.annotation package. Framework mapper defaults are preserved; classic SnakeYAML cleanup is deferred.
 
 Rebuild the chaos-monkey latency-assault prerequisite on its Jackson 3 line before qualifying the final distribution. Local tests and mapper parity do not imply deployed integration or remote CI qualification.
+
+### Reproducible Jackson 3 source build
+
+`.github/workflows/jackson3-source-build.yml` builds the prerequisite source stack in a fresh isolated Maven repository and runs its full test suites. It resolves every prerequisite to a full commit SHA once and uploads `source-refs.json`, `source-commits.txt` and Surefire reports. The shared mapper policy prerequisite is light-4j #2821; merge that before its consumers.
+
+The optional `source_refs` workflow-dispatch input replays recorded full SHAs. GitHub enables dispatch only after the workflow exists on the default branch; before merge, reproduce from the recorded source checkouts locally. A green local suite is separate from a successful remote source-build run.
+
+Logstash Encoder is now 9.0 (Jackson 3). Jackson 2 databind/core/jsr310 still enter through latency-assault until the chaos-monkey migration is qualified; this PR remains a draft. `ChaosMonkeyBinaryGuardTest` audits the handler actually present on the application classpath and rejects its old Config mapper ABI. Its independently frozen Maven Central 2.4.1 class is a negative control. A freshly rebuilt source dependency passing this test does not qualify an older published jar. Do not deploy the Jackson 2 chaos-monkey binaries with Jackson 3 Config.
