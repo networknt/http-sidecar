@@ -41,9 +41,10 @@ jobs:
           SOURCE_REFS: ${{ inputs.source_refs || '{}' }}
         shell: bash
         run: |
+          source_refs=$(jq -c --argjson overrides "$SOURCE_REFS" '. * $overrides' consumer/ci/jackson3-source-refs.json)
           python3 qualification-policy/scripts/resolve_jackson3_consumer_sources.py \
             --core-sha "$JACKSON3_CORE_REVISION" \
-            --repositories '{"json-overlay":null,"openapi-parser":null,"light-rest-4j":null,"light-chaos-monkey":null,"light-websocket-4j":null}' --source-refs "$SOURCE_REFS" \
+            --repositories '{"json-overlay":null,"openapi-parser":null,"light-rest-4j":null,"light-chaos-monkey":null,"light-websocket-4j":null}' --source-refs "$source_refs" \
             --report core-qualification.json --github-output "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
         with:
@@ -122,6 +123,24 @@ jobs:
           set -euo pipefail
           mvn -B -Dstyle.color=never -f consumer/pom.xml "-Dmaven.repo.local=$SOURCE_MAVEN_REPO" dependency:tree 2>&1 | tee resolved-dependencies.txt
           python3 sources/light-4j/scripts/jackson3_artifact_audit.py --repository "$SOURCE_MAVEN_REPO" --tree resolved-dependencies.txt --report artifact-audit.json
+      - name: Run strict Jackson 3 distribution profile
+        shell: bash
+        run: |
+          set -euo pipefail
+          status=0
+          mvn -B -f consumer/pom.xml "-Dmaven.repo.local=${{ runner.temp }}/m2" \
+            -Pjackson3-distribution -Dtest=ChaosMonkeyBinaryGuardTest test \
+            2>&1 | tee distribution-readiness.log || status=$?
+          jq -n --arg sha "$(git -C consumer rev-parse HEAD)" --argjson code "$status" \
+            '{schema: 1, source_sha: $sha, profile: "jackson3-distribution", exit_code: $code}' > distribution-readiness.json
+      - name: Preserve strict distribution result
+        uses: actions/upload-artifact@v4
+        with:
+          name: jackson3-distribution-readiness
+          path: |
+            distribution-readiness.json
+            distribution-readiness.log
+            consumer/target/distribution-surefire-reports/**
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -135,3 +154,26 @@ jobs:
             core-qualification.json
             **/target/surefire-reports/**
             **/target/*smoke*.log
+  distribution-readiness:
+    needs: test
+    if: ${{ always() && !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: jackson3-distribution-readiness
+      - name: Enforce strict distribution result
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          jq -e --arg sha "$EXPECTED_SHA" '.schema == 1 and .source_sha == $sha and .profile == "jackson3-distribution" and (.exit_code | type == "number")' distribution-readiness.json
+          code=$(jq -r '.exit_code' distribution-readiness.json)
+          if [[ "$code" != 0 ]]; then
+            echo 'BLOCKED: strict Jackson 3 distribution profile failed; inspect jackson3-distribution-readiness artifact.' | tee -a "$GITHUB_STEP_SUMMARY"
+            cat distribution-readiness.log
+            exit 1
+          fi
+          echo 'Strict Jackson 3 distribution profile passed.' >> "$GITHUB_STEP_SUMMARY"

@@ -589,7 +589,7 @@
             <id>jackson3-distribution</id>
             <build><plugins><plugin>
                 <groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId>
-                <configuration><systemPropertyVariables>
+                <configuration><reportsDirectory>${project.build.directory}/distribution-surefire-reports</reportsDirectory><systemPropertyVariables>
                     <jackson3.requireDistribution>true</jackson3.requireDistribution>
                 </systemPropertyVariables></configuration>
             </plugin></plugins></build>
