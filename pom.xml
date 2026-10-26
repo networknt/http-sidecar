@@ -584,7 +584,7 @@
                 </plugins>
             </build>
         </profile>
-    
+
         <profile>
             <id>jackson3-distribution</id>
             <build><plugins><plugin>
