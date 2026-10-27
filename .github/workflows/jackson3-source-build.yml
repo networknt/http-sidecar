@@ -123,7 +123,7 @@ jobs:
         run: |
           set -euo pipefail
           mvn -B -Dstyle.color=never -f consumer/pom.xml "-Dmaven.repo.local=$SOURCE_MAVEN_REPO" dependency:tree 2>&1 | tee resolved-dependencies.txt
-          python3 sources/light-4j/scripts/jackson3_artifact_audit.py --repository "$SOURCE_MAVEN_REPO" --tree resolved-dependencies.txt --report artifact-audit.json
+          python3 sources/light-4j/scripts/jackson3_artifact_audit.py --repository "$SOURCE_MAVEN_REPO" --tree resolved-dependencies.txt --require-jackson3-only --report artifact-audit.json
       - name: Run strict Jackson 3 distribution profile
         shell: bash
         run: |
