@@ -16,6 +16,8 @@ env:
   # Reviewed master policy and separately qualified candidate; both pins are immutable.
   JACKSON3_QUALIFIER_REVISION: f0d2100f972eec765b2b276e7ace38922394f0a6
   JACKSON3_CORE_REVISION: 97b2359b92ed3e1d05cac04f2da8760aa954e49d
+  # Independent checksum ledger for published dependencies; source qualification pins stay unchanged.
+  JACKSON3_ARTIFACT_AUDITOR_REVISION: 427c22669eed5cbf899d3b87a7189351fefdd81f
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -116,6 +118,14 @@ jobs:
           mvn -f sources/light-chaos-monkey/pom.xml "-Dmaven.repo.local=$JACKSON3_MAVEN_REPO" clean install 2>&1 | tee -a source-build.log
           mvn -f sources/light-websocket-4j/pom.xml "-Dmaven.repo.local=$JACKSON3_MAVEN_REPO" clean install 2>&1 | tee -a source-build.log
           mvn -f consumer/pom.xml "-Dmaven.repo.local=$JACKSON3_MAVEN_REPO" clean install 2>&1 | tee -a source-build.log
+      - name: Checkout reviewed artifact audit ledger
+        uses: actions/checkout@v4
+        with:
+          repository: networknt/light-4j
+          ref: ${{ env.JACKSON3_ARTIFACT_AUDITOR_REVISION }}
+          path: artifact-auditor
+          sparse-checkout: scripts/jackson3_artifact_audit.py
+          sparse-checkout-cone-mode: false
       - name: Audit resolved artifacts, including releases and Jackson boundaries
         env:
           SOURCE_MAVEN_REPO: ${{ runner.temp }}/m2
@@ -123,7 +133,7 @@ jobs:
         run: |
           set -euo pipefail
           mvn -B -Dstyle.color=never -f consumer/pom.xml "-Dmaven.repo.local=$SOURCE_MAVEN_REPO" dependency:tree 2>&1 | tee resolved-dependencies.txt
-          python3 sources/light-4j/scripts/jackson3_artifact_audit.py --repository "$SOURCE_MAVEN_REPO" --tree resolved-dependencies.txt --require-jackson3-only --report artifact-audit.json
+          python3 artifact-auditor/scripts/jackson3_artifact_audit.py --repository "$SOURCE_MAVEN_REPO" --tree resolved-dependencies.txt --require-jackson3-only --report artifact-audit.json
       - name: Run strict Jackson 3 distribution profile
         shell: bash
         run: |
