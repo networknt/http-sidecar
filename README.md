@@ -168,3 +168,25 @@ mvn clean install
 docker build -f docker/Dockerfile.native . -t http-sidecar-native:latest
 
 ```
+
+## Jackson 3 source line
+
+This line requires the Jackson 3 framework snapshots, Jackson 3.2.3, json-schema-validator 3.0.8 and yaml-rule 4.0.0-SNAPSHOT. Build the migrated prerequisites from source before this application; old snapshot binaries can have incompatible Config mapper descriptors. Jackson annotations retain their com.fasterxml.jackson.annotation package. Framework mapper defaults are preserved; classic SnakeYAML cleanup is deferred.
+
+Build the pinned, merged chaos-monkey sources and verify the strict distribution profile before qualifying the final distribution. Local tests and mapper parity do not imply deployed integration or remote CI qualification.
+
+### Reproducible Jackson 3 source build
+
+`.github/workflows/jackson3-source-build.yml` builds the prerequisite source stack in an isolated Maven repository, reuses independently qualified full-core test evidence, and runs the prerequisite and full consumer suites. It pins reviewed policy `f0d2100f972eec765b2b276e7ace38922394f0a6` and candidate `97b2359b92ed3e1d05cac04f2da8760aa954e49d`; yaml-rule/http-client are selected from that verified evidence. The complete prerequisite closure is pinned in `ci/jackson3-source-refs.json`, initialized from the successful source-build manifest, with reviewed updates expressed as full SHAs; no default-branch or migration-branch lookup is used. Explicit `source_refs` replay overrides are merged into that map and remain subject to core qualification. The workflow uploads `source-refs.json`, `source-commits.txt`, `core-qualification.json` and Surefire reports. Core registration and workflow-token acceptance are merged in light-4j #2825 and #2826.
+
+The optional `source_refs` workflow-dispatch input replays recorded full SHAs. GitHub enables dispatch only after the workflow exists on the default branch; before merge, reproduce from the recorded source checkouts locally. A green local suite is separate from a successful remote source-build run.
+
+Logstash Encoder is now 9.0 (Jackson 3). The source manifest pins the merged light-chaos-monkey #49 cleanup at 237a7b3d60b969343a088b25dd61e12f4d881d7d, which removes the unused Jackson 2 runtime declarations. Fresh source-build and strict distribution results on this consumer head determine distribution qualification; this PR remains a draft pending review. `ChaosMonkeyBinaryGuardTest` inspects class-file member references in every chaos-monkey class on the application classpath, including latency-assault, and rejects Jackson 2 Config/mapper ABI references. It records the Jackson 2 databind origin separately. The `jackson3-distribution` Maven profile rejects any remaining Jackson 2 databind; this strict gate must pass on the current consumer head before distribution qualification. Its independently frozen Maven Central 2.4.1 class is a negative control. A freshly rebuilt source dependency passing this test does not qualify an older published jar. Do not deploy the Jackson 2 chaos-monkey binaries with Jackson 3 Config.
+
+The source workflow now runs that profile after its normal suite and publishes an independent `distribution-readiness` check. That check stays red while Jackson 2 databind remains, even when the normal `test` check is green. Its command, exit code and isolated Surefire reports are retained in `jackson3-distribution-readiness`; a failed or missing result cannot pass readiness.
+
+### Exact-source CI qualification
+
+Consumer CI requires retained successful full-reactor evidence for the actual checked-out light-4j SHA and the same yaml-rule/http-client source commits. Core PR CI explicitly checks out the PR head, not its merge ref. Replay dispatches cannot qualify consumers. The attempt-specific evidence artifact records the actual checkout, prerequisite SHAs and test totals. A later pending, failed or cancelled run does not invalidate earlier valid evidence. All API pages and retained attempts are considered; missing or expired evidence blocks reuse. `core-qualification.json` records the accepted run and artifact.
+
+The full dependency ledger is audited across all groups. Every NetworkNT release and snapshot must be source-installed, apart from the explicitly SHA-256-pinned Jackson 3 validator release. Known Jackson 2 yaml-rule and chaos-monkey releases are rejected even with a local-install marker. Jackson 2 dependencies in other groups are reported; ready migrations reject them except shared annotations.

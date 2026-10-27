@@ -1,0 +1,10 @@
+{
+  "http-client": "5ecee29dbb08d813512f5379c2e1b902d553c5d4",
+  "json-overlay": "e309fd63f95317067c9b13a4bed7ac16727bfea5",
+  "light-4j": "97b2359b92ed3e1d05cac04f2da8760aa954e49d",
+  "light-chaos-monkey": "237a7b3d60b969343a088b25dd61e12f4d881d7d",
+  "light-rest-4j": "a31955945036d9108b7e9bb72167415cc9cfc287",
+  "light-websocket-4j": "08d307f34193703a5960bca200a07bd21d18d49a",
+  "openapi-parser": "9ae849056e49f7c796fe28bfe6093fbe4847cc5c",
+  "yaml-rule": "c237cc3a25720f43e57bf571e25d5fa06687aa3b"
+}
