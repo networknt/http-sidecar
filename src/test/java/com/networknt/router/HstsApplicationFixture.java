@@ -39,8 +39,11 @@ public class HstsApplicationFixture {
         return tls;
     }
 
-    static int port(Undertow server) {
-        return ((InetSocketAddress) server.getListenerInfo().getFirst().getAddress()).getPort();
+    static int port(Undertow server, boolean tls) {
+        return server.getListenerInfo().stream()
+                .filter(listener -> (listener.getSslContext() != null) == tls)
+                .mapToInt(listener -> ((InetSocketAddress) listener.getAddress()).getPort())
+                .findFirst().orElseThrow(() -> new IllegalStateException("Missing " + (tls ? "HTTPS" : "HTTP") + " listener"));
     }
 
     public static void main(String[] args) throws Exception {
@@ -68,7 +71,7 @@ public class HstsApplicationFixture {
         values.put("openapi-validator.enabled", false);
         values.put("token.enabled", false);
         values.put("openapi-handler.ignoreInvalidPath", true);
-        values.put("proxy.hosts", "http://127.0.0.1:" + port(backend));
+        values.put("proxy.hosts", "http://127.0.0.1:" + port(backend, false));
         values.put("proxy.metricsInjection", false);
         values.put("router.metricsInjection", false);
         Files.writeString(directory.resolve("values.yml"), Config.getInstance().getMapper().writeValueAsString(values));
@@ -84,9 +87,11 @@ public class HstsApplicationFixture {
         if (server.isEnableHttp()) builder.addHttpListener(0, "127.0.0.1");
         Undertow app = builder.build();
         app.start();
-        String ports = Integer.toString(port(app));
-        if (!overlay) ports += "," + ((InetSocketAddress) app.getListenerInfo().get(1).getAddress()).getPort();
-        Files.writeString(directory.resolve("ready"), ports);
+        String ports = Integer.toString(port(app, true));
+        if (!overlay) ports += "," + port(app, false);
+        Path pending = directory.resolve("ready.pending");
+        Files.writeString(pending, ports);
+        Files.move(pending, directory.resolve("ready"), StandardCopyOption.ATOMIC_MOVE);
         try { System.in.read(); } finally { app.stop(); backend.stop(); }
         System.exit(0);
     }
