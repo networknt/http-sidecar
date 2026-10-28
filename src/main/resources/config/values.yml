@@ -111,6 +111,7 @@ handler.handlers:
 
 handler.chains:
   default:
+    - header
     - exception
     - prefix
     - metrics
@@ -122,7 +123,6 @@ handler.chains:
     - memory
     - exchaos
     # - cors
-    - header
     - requestInterceptor
     # - responseInterceptor
     - audit
@@ -137,6 +137,7 @@ handler.chains:
     - proxy
 
   admin:
+    - header
     - exception
     - correlation
     - specification
@@ -179,12 +180,14 @@ handler.paths:
   - path: '/health'
     method: 'get'
     exec:
+      - header
       - exception
       - health
   # the health endpoint for the proxy + downstream backend if enabled without security, this is for teams to monitor overall API health via third party tools or via Control Plane
   - path: '/health/${server.serviceId}'
     method: 'get'
     exec:
+      - header
       - exception
       - limit
       - proxyHealth
@@ -217,11 +220,13 @@ handler.paths:
   - path: '/adm/modules'
     method: 'get'
     exec:
+      - header
       - modules
 
   - path: '/adm/modules'
     method: 'post'
     exec:
+      - header
       - body
       - configReload
 
@@ -253,14 +258,17 @@ handler.paths:
   - path: '/spec.yaml'
     method: 'get'
     exec:
+      - header
       - spec
   - path: '/specui.html'
     method: 'get'
     exec:
+      - header
       - swaggerui
   - path: '/favicon.ico'
     method: 'get'
     exec:
+      - header
       - favicon
 
 
