@@ -1,10 +1,10 @@
 {
-  "http-client": "5ecee29dbb08d813512f5379c2e1b902d553c5d4",
-  "json-overlay": "e309fd63f95317067c9b13a4bed7ac16727bfea5",
-  "light-4j": "97b2359b92ed3e1d05cac04f2da8760aa954e49d",
-  "light-chaos-monkey": "237a7b3d60b969343a088b25dd61e12f4d881d7d",
-  "light-rest-4j": "a31955945036d9108b7e9bb72167415cc9cfc287",
-  "light-websocket-4j": "08d307f34193703a5960bca200a07bd21d18d49a",
-  "openapi-parser": "9ae849056e49f7c796fe28bfe6093fbe4847cc5c",
+  "http-client": "fdc96cc5d9df2475ee2129f7a70f300b5b6c0a06",
+  "json-overlay": "85e7fc322d9c65eeb2f4f9557888c6db664d382f",
+  "light-4j": "bc3e4b5e2719d705d58a2edeabeb9bb5009c7401",
+  "light-chaos-monkey": "89b12694ea98c10281106918707e20c64635e1f3",
+  "light-rest-4j": "0b65bfb78a15d71060d81158d29a0276ac31fae4",
+  "light-websocket-4j": "e47257968efa32e746eed58f7ccad7d61101c011",
+  "openapi-parser": "d679c1f435651ec0b00c07591427d951fb98ecc2",
   "yaml-rule": "c237cc3a25720f43e57bf571e25d5fa06687aa3b"
 }
