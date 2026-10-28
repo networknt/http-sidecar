@@ -1,0 +1,37 @@
+# Merge into the active application values.yml; do not use as a standalone routing configuration.
+server.enableHttps: true
+server.enableHttp: false
+header.enabled: true
+header.response.update:
+  Cache-Control: no-store
+  X-Content-Type-Options: nosniff
+  Strict-Transport-Security: max-age=31536000
+handler.chains:
+  default:
+  - header
+  - exception
+  - prefix
+  - metrics
+  - limit
+  - correlation
+  - killapp
+  - latency
+  - memory
+  - exchaos
+  - requestInterceptor
+  - audit
+  - token
+  - router
+  - specification
+  - security
+  - sanitizer
+  - validator
+  - proxy
+  admin:
+  - header
+  - exception
+  - correlation
+  - specification
+  - security
+  - body
+  - validator
