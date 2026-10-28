@@ -1,47 +1,48 @@
-# HTTPS-only HSTS configuration
+# Dedicated HTTPS ingress HSTS configuration
 
-This opt-in overlay addresses Checkmarx A02 (`light-rest-4j` favicon HSTS) in a
-consuming application using the existing `HeaderHandler`.
+This opt-in [overlay](values-overlay.yml) addresses Checkmarx A02 using the existing
+HeaderHandler. It is for a **dedicated HTTPS ingress instance** with a browser-trusted
+certificate. It disables HTTP, including the sidecar's normal plaintext egress port
+9080. **Do not apply it to the usual co-located sidecar whose application calls
+http://localhost:9080**: those calls would fail even while HTTPS probes stay healthy.
+Use a separate ingress instance or configure HSTS at the trusted TLS edge instead.
+The packaged defaults retain HTTP egress and do not enable HSTS.
 
-Merge [values-overlay.yml](values-overlay.yml) into the active application's
-complete `values.yml`. It is not a standalone routing configuration. Preserve
-any application-specific handlers, routes and response-header updates: combine
-the header maps, and move `header` to the beginning of every applicable chain
-rather than discarding custom chain entries. The supplied chains match the
-packaged sidecar defaults. The overlay enables HTTPS, disables plaintext HTTP,
-and sets `Strict-Transport-Security: max-age=31536000` without `includeSubDomains`
-or `preload`.
+Merge the overlay into the complete application values.yml using the normal external
+configuration directory or config server. It is not a standalone configuration.
+Preserve custom routes/chains and merge any existing `header.pathPrefixHeader` rules;
+review overlapping prefixes so another rule cannot override the host policy.
+The overlay does not copy or replace handler chains or the existing comma-string
+`header.response.update` / `header.response.remove` settings.
 
-Use a certificate trusted by the consuming browsers; the bundled development
-certificate is not a production certificate. Select the merged configuration
-through the application's normal external configuration directory or config
-server. No running instance is changed by the presence of this overlay.
+The packaged default and admin chains now start with header. Direct favicon,
+specification, Swagger UI, health and module routes include it explicitly. The root
+prefix response rule applies headers when the response is sent, after the proxy
+copies backend headers. It enforces one HSTS value, no-store and nosniff, and removes
+X-Powered-By even when a backend supplies conflicting values. Custom routes and
+unsupported-method fallback chains must also run header before terminating.
 
-The packaged sidecar's direct favicon, Swagger UI, specification, health and
-module-management routes now include `header` explicitly. This closes the route
-bypass that otherwise prevents configured response headers from reaching them.
-The overlay also puts the response-header policy before short-circuiting
-handlers in the default and admin chains. Header policy therefore reaches the
-supported routes' normal, rejection and error responses. Review any custom
-routes, unsupported-method fallback or proxy-generated response separately.
+HeaderHandler does not distinguish HTTP from HTTPS listeners. This profile cannot
+provide TLS-only HSTS in a single dual-listener process. Keep public HTTP redirect
+handling outside this policy. With TLS offload, configure the trusted edge to emit
+or preserve HSTS and prevent untrusted direct-origin access; client-supplied
+forwarded-protocol headers do not establish trust.
 
-The default sidecar can still use plaintext HTTP internally and does not emit
-HSTS by default. Do not apply this overlay to a publicly accessible plaintext
-listener: generic `HeaderHandler` does not check the request scheme. For public
-HTTP-to-HTTPS redirects, keep the plaintext redirect handler outside this HSTS
-chain. With TLS termination at an edge, ensure the edge preserves or emits one
-HSTS header on public HTTPS responses and that the origin cannot be reached
-through an untrusted direct path. Client-supplied forwarded-protocol headers
-are not a trust decision.
+SpecificationHstsConfigurationTest loads the packaged values and overlay from the
+classpath, then initializes the real handler orchestration in isolated JVMs. It
+loads header.yml through values substitution, retains production routes/chains,
+and uses existing test keystores. Loopback checks cover favicon bytes, health,
+spec/Swagger, admin routes and proxied success/redirect/error/not-found responses
+with conflicting backend headers. A default-profile control checks plaintext
+proxy access remains usable. External authentication/token integrations are disabled
+only in the fixture; this is handler-pipeline qualification, not a deployment test.
 
-`SpecificationHstsConfigurationTest` reads both the packaged values and this
-overlay, checks the actual route/chain ordering, and tests the real favicon
-handler and header middleware over TLS. It covers normal, redirect, not-found
-and exception responses and checks the unconfigured control and preserved icon.
-The TLS certificate is generated only for the test and is not checked in.
+The policy intentionally omits `includeSubDomains` and `preload`; either needs a
+separate domain-wide compatibility review. HSTS is learned over a secure connection,
+so first-visit protection requires an appropriate preload arrangement. See
+[RFC 6797](https://www.rfc-editor.org/rfc/rfc6797.html).
 
-Before closing the partner finding, deploy the reviewed merged configuration,
-capture public HTTPS headers for the favicon and other supported response
-paths, confirm one intended HSTS value, and rerun the partner scan. The
-configuration and loopback tests do not establish the partner deployment's
-state. See [RFC 6797](https://www.rfc-editor.org/rfc/rfc6797.html).
+Before closing the partner finding, deploy the reviewed configuration and capture
+public HTTPS headers for the favicon, normal, redirect and error responses. Verify
+one intended HSTS value and direct-origin access restrictions, then rerun the scan.
+Loopback tests do not establish the partner deployment's state.

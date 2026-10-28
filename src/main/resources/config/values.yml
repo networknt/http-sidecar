@@ -111,6 +111,7 @@ handler.handlers:
 
 handler.chains:
   default:
+    - header
     - exception
     - prefix
     - metrics
@@ -122,7 +123,6 @@ handler.chains:
     - memory
     - exchaos
     # - cors
-    - header
     - requestInterceptor
     # - responseInterceptor
     - audit
@@ -137,6 +137,7 @@ handler.chains:
     - proxy
 
   admin:
+    - header
     - exception
     - correlation
     - specification
