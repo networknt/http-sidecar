@@ -1,5 +1,17 @@
 # Change Log
 
+## [2.5.0](https://github.com/networknt/http-sidecar/tree/2.5.0) (2026-11-04)
+
+**Commits:**
+
+- upgrade to version 2.5.0 before release in 2.x branch ([0fada2d](https://github.com/networknt/http-sidecar/commit/0fada2d1487cbcf07d75ac10796fd0faea277716)) (by Steve Hu)
+- upgrade to version 2.5.0-SNAPSHOT after release in 2.x branch ([974fbc1](https://github.com/networknt/http-sidecar/commit/974fbc1261daac34987fe4ac00d6e27a5858c8b6)) (by Steve Hu)
+- upgrade jackson to 2.22.4 from 2.22.3 ([f577dcb](https://github.com/networknt/http-sidecar/commit/f577dcb9e0314c210b7089d970fe553593aec81d)) (by Steve Hu)
+- upgrade logback to 1.6.6 from 1.6.5 ([d274ecc](https://github.com/networknt/http-sidecar/commit/d274ecc1fe936940ce37f11e255bbef86331377b)) (by Steve Hu)
+- fix: backport HSTS configuration and route coverage to 2.x (#142) ([f683a2f](https://github.com/networknt/http-sidecar/commit/f683a2f212db4e69ff1cd11f7ea7bb710a271148)) (by Steve Hu)
+- upgrade maven-version to 2.23.0 from 2.22.0 ([b5be601](https://github.com/networknt/http-sidecar/commit/b5be601a95e98d6796dedb61a1a63b384e653eb0)) (by Steve Hu)
+- upgrade to version 2.4.2-SNAPSHOT after release in master branch ([8431325](https://github.com/networknt/http-sidecar/commit/84313255853d0da004db9a82a43b93d61f39092d)) (by Steve Hu)
+
 ## [2.4.1](https://github.com/networknt/http-sidecar/tree/2.4.1) (2026-10-11)
 
 **Commits:**
