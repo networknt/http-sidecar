@@ -1,5 +1,18 @@
 # Change Log
 
+## [2.5.1](https://github.com/networknt/http-sidecar/tree/2.5.1) (2026-11-21)
+
+**Commits:**
+
+- upgrade to version 2.5.1 before release in 2.x branch ([c6937ce](https://github.com/networknt/http-sidecar/commit/c6937ced9796df395b568f907f3150c5293ad9da)) (by Steve Hu)
+- upgrade logback to 1.6.8 from 1.6.7 ([54ee991](https://github.com/networknt/http-sidecar/commit/54ee991199cd33604ddf140e75a9334cc25ad886)) (by Steve Hu)
+- upgrade logback to 1.6.7 from 1.6.6 ([9a42f61](https://github.com/networknt/http-sidecar/commit/9a42f6112310c84b4e77aae04c06c888c7691b5f)) (by Steve Hu)
+- upgrade maven-version to 2.25.2 from 2.23.0 ([fb06eeb](https://github.com/networknt/http-sidecar/commit/fb06eebdcacb3abdfed556b4f9a675706a9cf2cd)) (by Steve Hu)
+- upgrade exec-maven to 3.7.0 from 3.6.4 ([9ddf2d1](https://github.com/networknt/http-sidecar/commit/9ddf2d18166945031664537cbcdbd0364706e8aa)) (by Steve Hu)
+- upgrade maven-compiler to 3.16.0 from 3.8.1 ([1619fa7](https://github.com/networknt/http-sidecar/commit/1619fa72c09cee3dd08036304e4c9c739a68230d)) (by Steve Hu)
+- upgrade maven-surefire to 3.6.1 from 3.6.0 ([f24bed5](https://github.com/networknt/http-sidecar/commit/f24bed5294957c6ff4a81c32284f5552121a0c4e)) (by Steve Hu)
+- upgrade to version 2.5.1-SNAPSHOT after release in 2.x branch ([3c50b59](https://github.com/networknt/http-sidecar/commit/3c50b593d4f58829c4f8f38bcce8918d7e23650c)) (by Steve Hu)
+
 ## [2.5.0](https://github.com/networknt/http-sidecar/tree/2.5.0) (2026-11-04)
 
 **Commits:**
